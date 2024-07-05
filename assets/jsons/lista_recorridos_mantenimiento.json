@@ -1,0 +1,61 @@
+{
+    "data": [
+        {
+            "sem": 1,
+            "inicio": "2021-01-01",
+            "fin": "2021-01-07",
+            "responsable": "Juan Perez",
+            "recorrido_sucursales": [
+                {
+                    "folio": "FOLIO-001",
+                    "nombre": "Sucursal 1",
+                    "tipo": "Tipo 1",
+                    "region": "Region 1",
+                    "checklist": "Checklist 1"
+                },
+                {
+                    "folio": "FOLIO-002",
+                    "nombre": "Sucursal 2",
+                    "tipo": "Tipo 2",
+                    "region": "Region 2",
+                    "checklist": "Checklist 2"
+                }
+            ],
+            "status": "Pendiente",
+            "fecha_registro": "2021-01-08"
+        },
+        {
+            "sem": 2,
+            "inicio": "2021-01-08",
+            "fin": "2021-01-14",
+            "responsable": "Pedro Perez",
+            "recorrido_sucursales": [
+                {
+                    "folio": "FOLIO-003",
+                    "nombre": "Sucursal 3",
+                    "tipo": "Tipo 3",
+                    "region": "Region 3",
+                    "checklist": "Checklist 3"
+                },
+                {
+                    "folio": "FOLIO-004",
+                    "nombre": "Sucursal 4",
+                    "tipo": "Tipo 4",
+                    "region": "Region 4",
+                    "checklist": "Checklist 4"
+                },
+                {
+                    "folio": "FOLIO-005",
+                    "nombre": "Sucursal 5",
+                    "tipo": "Tipo 5",
+                    "region": "Region 5",
+                    "checklist": "Checklist 5"
+                    
+                }
+            ],
+            "status": "Pendiente",
+            "fecha_registro": "2021-01-08"
+        }
+        
+    ]
+}
