@@ -30,37 +30,25 @@ class FachadaViewLandScape extends ConsumerWidget {
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
     return Row(
       children: [
-        Expanded(
+        const Expanded(
           child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: EdgeInsets.all(15.0),
             child: Align(
               alignment: Alignment.center,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const ContainerPhotoComponent(),
-                    const Text('Marca: Laboratorio Médico del CHOPO'),
-                    const Gap(10),
-                    const Text('Región: QUERETARO'),
-                    const Gap(10),
-                    const Text('Tipo sucursal: Consultorio'),
-                    const Gap(20),
-                    TextFormField(
-                      // keyboard.next
-                      decoration: const InputDecoration(
-                        labelText: 'Gerente de sucursal',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    const Gap(10),
-                    TextFormField(
-                      decoration: const InputDecoration(
-                        labelText: 'No. de contacto',
-                        hintText: 'Teléfono o celular',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
+                    ContainerPhotoComponent(),
+                    Text('Marca: Laboratorio Médico del CHOPO'),
+                    Gap(10),
+                    Text('Región: QUERETARO'),
+                    Gap(10),
+                    Text('Tipo sucursal: Consultorio'),
+                    Gap(20),
+                    TextFieldGerenteComponent(),
+                    Gap(10),
+                    TextFieldContactoComponent(),
                   ],
                 ),
               ),
@@ -89,7 +77,8 @@ class FachadaViewPortrait extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
-    final (image) = ref.watch(fachadaViewModelProvider.select((value) => (value.imagePath)));
+    final (image, marca, region, tipoSucursal) = ref.watch(fachadaViewModelProvider
+        .select((value) => (value.imagePath, value.marca, value.region, value.tipoSucursal)));
     return Column(
       children: [
         Expanded(
@@ -109,30 +98,16 @@ class FachadaViewPortrait extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Marca: Laboratorio Médico del CHOPO'),
+                          Text('Marca: $marca'),
                           const Gap(10),
-                          const Text('Región: QUERETARO'),
+                          Text('Región: $region'),
                           const Gap(10),
-                          const Text('Tipo sucursal: Consultorio'),
+                          Text('Tipo sucursal: $tipoSucursal'),
                           const Gap(30),
-                          TextFormField(
-                            // keyboard.next
-                            decoration: const InputDecoration(
-                              labelText: 'Gerente de sucursal',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
+                          const TextFieldGerenteComponent(),
                           const Gap(10),
-                          TextFormField(
-                            decoration: const InputDecoration(
-                              labelText: 'No. de contacto',
-                              hintText: 'Teléfono o celular',
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                          if (image.isNotEmpty)
-                          const Gap(80)
-                          else const Gap(10),
+                          const TextFieldContactoComponent(),
+                          if (image.isNotEmpty) const Gap(80) else const Gap(10),
                         ],
                       ),
                     )

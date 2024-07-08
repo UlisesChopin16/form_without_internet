@@ -24,7 +24,7 @@ class CameraViewModel extends _$CameraViewModel {
 
   Future<CaptureRequest> generateImagePath(List<Sensor> sensors) async {
     final directory = await getTemporaryDirectory();
-    final path = '${directory.path}/fotosFachada/${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final path = '${directory.path}/fotosFachada-${DateTime.now().millisecondsSinceEpoch}.jpg';
     print('path: $path');
     return SingleCaptureRequest(path, sensors.first);
   }
