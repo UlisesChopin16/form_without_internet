@@ -3,31 +3,6 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'recorridos_mantenimiento_response.freezed.dart';
 part 'recorridos_mantenimiento_response.g.dart';
 
-// {
-//             "sem": 1,
-//             "inicio": "2021-01-01",
-//             "fin": "2021-01-07",
-//             "responsable": "Juan Perez",
-//             "recorrido_sucursales": [
-//                 {
-//                     "folio": "FOLIO-001",
-//                     "nombre": "Sucursal 1",
-//                     "tipo": "Tipo 1",
-//                     "region": "Region 1",
-//                     "checklist": "Checklist 1",
-//                 },
-//                 {
-//                     "folio": "FOLIO-002",
-//                     "nombre": "Sucursal 2",
-//                     "tipo": "Tipo 2",
-//                     "region": "Region 2",
-//                     "checklist": "Checklist 2",
-//                 }
-//             ]
-//           "status": "Pendiente",
-//           "fecha_registro": "2021-01-01"
-//         },
-
 @freezed
 class RecorridosMantenimientoResponse with _$RecorridosMantenimientoResponse {
   const factory RecorridosMantenimientoResponse({

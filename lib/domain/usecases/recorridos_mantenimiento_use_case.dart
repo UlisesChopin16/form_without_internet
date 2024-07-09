@@ -1,5 +1,5 @@
 import 'package:form_without_internet/data/repository/recorridos_mantenimiento_repository.dart';
-import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model.dart';
+import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model/recorridos_mantenimiento_response_model.dart';
 import 'package:form_without_internet/domain/usecases/base_use_case.dart';
 
 class RecorridosMantenimientoUseCase

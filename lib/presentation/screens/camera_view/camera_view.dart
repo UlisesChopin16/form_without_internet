@@ -13,7 +13,6 @@ class CameraView extends ConsumerStatefulWidget {
 }
 
 class _CameraViewState extends ConsumerState<CameraView> {
-
   @override
   void initState() {
     super.initState();
@@ -25,75 +24,73 @@ class _CameraViewState extends ConsumerState<CameraView> {
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
     final (isImageTaking) =
         ref.watch(cameraViewModelProvider.select((value) => (value.isImageTaken)));
-    return CameraAwesomeBuilder.awesome(
-      sensorConfig: SensorConfig.single(
-        sensor: Sensor.position(SensorPosition.back),
-        flashMode: FlashMode.auto,
-        aspectRatio: CameraAspectRatios.ratio_16_9,
-        zoom: 0.0,
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Camera'),
       ),
-      saveConfig: SaveConfig.photo(
-        pathBuilder: ref.read(cameraViewModelProvider.notifier).generateImagePath,
-        exifPreferences: ExifPreferences(saveGPSLocation: false),
-      ),
-      enablePhysicalButton: true,
-      previewFit: CameraPreviewFit.fitWidth,
-      // middleContentBuilder: (state) => const SizedBox.shrink(),
-      topActionsBuilder: (state) => AwesomeTopActions(
-        state: state,
-        children: [
-          AwesomeFlashButton(state: state),
-          if (state is PhotoCameraState)
-            AwesomeAspectRatioButton(
-              state: state,
-            ),
-          const SizedBox.square(
-            dimension: 50,
-          )
-        ],
-      ),
-      bottomActionsBuilder: (state) => Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          state.when(
-            onPhotoMode: (photoState) => AwesomeOrientedWidget(
-              child: FloatingActionButton(
-                heroTag: null,
-                onPressed: isImageTaking
-                    ? null
-                    : () => takeImage(
-                          photoState: photoState,
-                          ref: ref,
-                          context: context,
-                        ),
-                child: isImageTaking
-                    ? const SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                          strokeWidth: 2,
-                        ),
-                      )
-                    : const Icon(Icons.camera_alt),
+      body: CameraAwesomeBuilder.awesome(
+        sensorConfig: SensorConfig.single(
+          sensor: Sensor.position(SensorPosition.back),
+          flashMode: FlashMode.auto,
+          aspectRatio: CameraAspectRatios.ratio_16_9,
+          zoom: 0.0,
+        ),
+        saveConfig: SaveConfig.photo(
+          pathBuilder: ref.read(cameraViewModelProvider.notifier).generateImagePath,
+          exifPreferences: ExifPreferences(saveGPSLocation: false),
+        ),
+        enablePhysicalButton: true,
+        previewFit: CameraPreviewFit.fitWidth,
+        // middleContentBuilder: (state) => const SizedBox.shrink(),
+        topActionsBuilder: (state) => AwesomeTopActions(
+          state: state,
+          children: [
+            AwesomeFlashButton(state: state),
+            if (state is PhotoCameraState)
+              AwesomeAspectRatioButton(
+                state: state,
+              ),
+            const SizedBox.square(
+              dimension: 50,
+            )
+          ],
+        ),
+        bottomActionsBuilder: (state) => Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            state.when(
+              onPhotoMode: (photoState) => AwesomeOrientedWidget(
+                child: FloatingActionButton(
+                  heroTag: null,
+                  onPressed: isImageTaking
+                      ? null
+                      : () => takeImage(
+                            photoState: photoState,
+                            ref: ref,
+                            context: context,
+                          ),
+                  child: isImageTaking
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Icon(Icons.camera_alt),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -107,6 +104,13 @@ class _CameraViewState extends ConsumerState<CameraView> {
 
     if (isTaking) return null;
 
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
     ref.read(cameraViewModelProvider.notifier).isTaking(true);
 
     try {
@@ -117,7 +121,6 @@ class _CameraViewState extends ConsumerState<CameraView> {
       );
 
       if (!context.mounted) return;
-
       ref.read(cameraViewModelProvider.notifier).isTaking(false);
       Navigator.of(context).pop(path);
     } catch (e) {

@@ -1,6 +1,6 @@
 import 'package:form_without_internet/app/extensions.dart';
 import 'package:form_without_internet/data/responses/recorrido_mantenimiento_response.dart/recorridos_mantenimiento_response.dart';
-import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model.dart';
+import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model/recorridos_mantenimiento_response_model.dart';
 
 extension RecorridosMantenimientoApiMapper on RecorridoSucursal {
   RecorridoSucursalModel toDomain() {

@@ -1,5 +1,5 @@
 import 'package:form_without_internet/app/dep_inject.dart';
-import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model.dart';
+import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model/recorridos_mantenimiento_response_model.dart';
 import 'package:form_without_internet/domain/usecases/recorridos_mantenimiento_use_case.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';

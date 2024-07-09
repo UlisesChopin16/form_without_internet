@@ -25,10 +25,10 @@ class ChecklistMantenimientoView extends ConsumerWidget {
           index: currentTab,
           children: const [
             FachadaView(),
-            ListFormsView(),
-            ListFormsView(),
-            ListFormsView(),
-            ListFormsView(),
+            ListFormsView(listOf: 'areas',),
+            ListFormsView(listOf: 'sanitarios',),
+            ListFormsView(listOf: 'servicios',),
+            ListFormsView(listOf: 'miscelaneo',),
           ],
         ),
         floatingActionButton: FloatingActionButton(

@@ -5,9 +5,9 @@ import 'package:form_without_internet/data/network/apis/recorridos_mantenimiento
 import 'package:form_without_internet/data/network_info/network_info.dart';
 import 'package:form_without_internet/data/repository/recorridos_mantenimiento_repository.dart';
 import 'package:form_without_internet/data/repository/recorridos_mantenimiento_repository_impl.dart';
+import 'package:form_without_internet/domain/usecases/list_forms_use_case.dart';
 import 'package:form_without_internet/domain/usecases/recorridos_mantenimiento_use_case.dart';
 import 'package:get_it/get_it.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,8 +61,8 @@ Future<void> initAppModule() async {
     () => RecorridosMantenimientoUseCase(instance()),
   );
 
-  instance.registerLazySingleton<ImagePicker>(
-    () => ImagePicker(),
+  instance.registerLazySingleton<ListFormsUseCase>(
+    () => ListFormsUseCase(instance()),
   );
 }
 
