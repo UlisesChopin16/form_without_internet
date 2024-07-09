@@ -31,8 +31,17 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
 
     final data = await _useCase.execute(section);
 
+    // organizar la lista por active y title
+    final List<SectionResponseModel> dataSource = List.from(data.data!);
+    dataSource.sort((a, b) {
+      if (a.active == b.active) {
+        return a.title.compareTo(b.title);
+      }
+      return a.active ? -1 : 1;
+    });
+
     state = state.copyWith(
-      data: data.data!,
+      data: dataSource,
       isLoading: false,
     );
   }
@@ -41,11 +50,36 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
   void changeState(bool value, int index) {
     List<SectionResponseModel> newData = List.from(state.data);
     newData[index] = newData[index].copyWith(active: value);
+    // organizar la lista por active y title
+    newData.sort((a, b) {
+      if (a.active == b.active) {
+        return a.title.compareTo(b.title);
+      }
+      return a.active ? -1 : 1;
+    });
     state = state.copyWith(data: newData);
+  }
+
+  @override
+  List<int> getCompletedsAndNot(int index) {
+    List<int> completedsAndNot = [];
+    int completeds = 0;
+    int notCompleteds = 0;
+    for (var element in state.data[index].questionsResponseModel) {
+      if (element.value.isNotEmpty) {
+        completeds++;
+      } else {
+        notCompleteds++;
+      }
+    }
+    completedsAndNot.add(completeds);
+    completedsAndNot.add(notCompleteds);
+    return completedsAndNot;
   }
 }
 
 abstract class ListFormsInput {
   void getForms(String section);
   void changeState(bool value, int index);
+  List<int> getCompletedsAndNot(int index);
 }

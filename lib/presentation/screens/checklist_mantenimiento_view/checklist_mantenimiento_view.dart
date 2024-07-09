@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:form_without_internet/presentation/common/components/label_text_component.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view_model/checklist_mantenimiento_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view.dart';
@@ -10,12 +11,21 @@ class ChecklistMantenimientoView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final (tabs, currentTab) = ref.watch(checklistMantenimientoViewModelProvider.select((value) => (value.tabs,value.currentTabIndex),),);
+    final (tabs, currentTab) = ref.watch(
+      checklistMantenimientoViewModelProvider.select(
+        (value) => (value.tabs, value.currentTabIndex),
+      ),
+    );
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Fachada de la sucursal: CONSTITUYENTES'),
+          // title: const Text('Fachada de la sucursal: CONSTITUYENTES'),
+          title: const LabelTextComponent(
+            label: 'Fachada de la sucursal',
+            text: 'CONSTITUYENTES',
+            fontSize: 20,
+          ),
           bottom: TabBar(
             onTap: ref.read(checklistMantenimientoViewModelProvider.notifier).changeTabIndex,
             tabs: tabs.map((tab) => Tab(text: tab)).toList(),
@@ -25,10 +35,18 @@ class ChecklistMantenimientoView extends ConsumerWidget {
           index: currentTab,
           children: const [
             FachadaView(),
-            ListFormsView(listOf: 'areas',),
-            ListFormsView(listOf: 'sanitarios',),
-            ListFormsView(listOf: 'servicios',),
-            ListFormsView(listOf: 'miscelaneo',),
+            ListFormsView(
+              listOf: 'areas',
+            ),
+            ListFormsView(
+              listOf: 'sanitarios',
+            ),
+            ListFormsView(
+              listOf: 'servicios',
+            ),
+            ListFormsView(
+              listOf: 'miscelaneo',
+            ),
           ],
         ),
         floatingActionButton: FloatingActionButton(

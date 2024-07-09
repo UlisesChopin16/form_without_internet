@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:form_without_internet/presentation/common/components/label_text_component.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
 import 'package:gap/gap.dart';
 
@@ -40,11 +41,23 @@ class FachadaViewLandScape extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ContainerPhotoComponent(),
-                    Text('Marca: Laboratorio Médico del CHOPO'),
+                    LabelTextComponent(
+                      label: 'Marca',
+                      text: 'Laboratorio Médico del CHOPO',
+                      fontSize: 14,
+                    ),
                     Gap(10),
-                    Text('Región: QUERETARO'),
+                    LabelTextComponent(
+                      label: 'Región',
+                      text: 'QUERETARO',
+                      fontSize: 14,
+                    ),
                     Gap(10),
-                    Text('Tipo sucursal: Consultorio'),
+                    LabelTextComponent(
+                      label: 'Tipo sucursal',
+                      text: 'Consultorio',
+                      fontSize: 14,
+                    ),
                     Gap(20),
                     TextFieldGerenteComponent(),
                     Gap(10),
