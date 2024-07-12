@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_without_internet/presentation/screens/camera_view/camera_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/form_view/form_view_model/form_view_model.dart';
+import 'package:form_without_internet/types/photo_type.dart';
 
 class ContainerAddImageComponent extends ConsumerWidget {
   final int index;
@@ -15,7 +16,7 @@ class ContainerAddImageComponent extends ConsumerWidget {
     final images =
         ref.watch(formViewModelProvider.select((value) => value.questions[index].images));
     return InkWell(
-      onTap: () => onTap(context, ref),
+      onTap: () => onTap(context, ref, index),
       child: Card(
         elevation: 5,
         color: Colors.grey[300],
@@ -48,14 +49,17 @@ class ContainerAddImageComponent extends ConsumerWidget {
     );
   }
 
-  Future<void> onTap(BuildContext context, WidgetRef ref) async {
-    final path = await Navigator.of(context).push(
+  Future<void> onTap(BuildContext context, WidgetRef ref, int index) async {
+    final images =
+        ref.watch(formViewModelProvider.select((value) => value.questions[index].images));
+    Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const CameraView(),
+        builder: (context) => CameraView(
+          photoType: PhotoType.descriptionQuestions,
+          index: index,
+          images: images,
+        ),
       ),
     );
-    if (path != null) {
-      ref.read(formViewModelProvider.notifier).addImage(index, path);
-    }
   }
 }

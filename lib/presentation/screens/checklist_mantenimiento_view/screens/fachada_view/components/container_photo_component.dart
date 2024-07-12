@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_without_internet/presentation/screens/camera_view/camera_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
+import 'package:form_without_internet/types/photo_type.dart';
 import 'package:gap/gap.dart';
 
 class ContainerPhotoComponent extends ConsumerWidget {
@@ -79,7 +80,7 @@ class ContainerPhotoComponent extends ConsumerWidget {
   Future<void> onTap(BuildContext context, WidgetRef ref) async {
     final path = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const CameraView(),
+        builder: (context) => const CameraView(photoType: PhotoType.fachadaSection,),
       ),
     );
     if (path != null) {

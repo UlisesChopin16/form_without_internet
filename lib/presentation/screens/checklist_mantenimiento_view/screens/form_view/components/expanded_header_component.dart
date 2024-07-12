@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/form_view/form_view_model/form_view_model.dart';
+import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:gap/gap.dart';
 
 class ExpandedHeaderComponent extends ConsumerWidget {
@@ -49,12 +50,7 @@ class ExpandedHeaderComponent extends ConsumerWidget {
                   return Expanded(
                     child: InkWell(
                       onTap: () {
-                        ref
-                            .read(formViewModelProvider.notifier)
-                            .changeValue(indexItem, titles[index]);
-                        ref
-                            .read(formViewModelProvider.notifier)
-                            .changeSize(indexItem);
+                        onTap(ref, index);
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,12 +69,7 @@ class ExpandedHeaderComponent extends ConsumerWidget {
                             value: titles[index],
                             groupValue: value,
                             onChanged: (value) {
-                              ref
-                                  .read(formViewModelProvider.notifier)
-                                  .changeValue(indexItem, value.toString());
-                              ref
-                                  .read(formViewModelProvider.notifier)
-                                  .changeSize(indexItem);
+                              onTap(ref, index);
                             },
                           ),
                         ],
@@ -92,5 +83,21 @@ class ExpandedHeaderComponent extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  onTap(WidgetRef ref, int index) {
+    ref.read(formViewModelProvider.notifier).changeValue(indexItem, titles[index]);
+    ref.read(formViewModelProvider.notifier).changeSize(indexItem);
+
+    final (questions, formIndex) = ref.watch(
+      formViewModelProvider.select(
+        (value) => (
+          value.questions,
+          value.formIndex,
+        ),
+      ),
+    );
+
+    ref.read(listFormsViewModelProvider.notifier).getQuestions(questions, formIndex);
   }
 }

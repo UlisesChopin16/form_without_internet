@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:form_without_internet/app/app_preferences.dart';
+import 'package:form_without_internet/app/dep_inject.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -6,8 +10,12 @@ part 'fachada_view_model.g.dart';
 
 @freezed
 class FachadaModel with _$FachadaModel {
+  const FachadaModel._();
+
   const factory FachadaModel({
+    @Default(false) bool isLoading,
     @Default('') String imagePath,
+    @Default('') String folio,
     @Default(false) bool isImageTaken,
     @Default('Laboratorio Medico del CHOPO') String marca,
     @Default('QUERETARO') String region,
@@ -15,18 +23,59 @@ class FachadaModel with _$FachadaModel {
     @Default('') String gerente,
     @Default('') String telefonoContacto,
   }) = _FachadaModel;
+
+  factory FachadaModel.fromJson(Map<String, dynamic> json) => _$FachadaModelFromJson(json);
+
+  String toEncode() => json.encode(
+        FachadaModel(
+          folio: folio,
+          imagePath: imagePath,
+          marca: marca,
+          region: region,
+          tipoSucursal: tipoSucursal,
+          gerente: gerente,
+          telefonoContacto: telefonoContacto,
+        ).toJson(),
+      );
 }
 
 @riverpod
-class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInput{
+class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInput {
+  final AppPreferences _preferences = instance<AppPreferences>();
+
   @override
   FachadaModel build() {
     return const FachadaModel();
   }
 
   @override
-  void setImagePath(String path) {
+  void getFachada(String folio) async {
+    state = state.copyWith(
+      isLoading: true,
+      folio: folio,
+    );
+    final data = _preferences.getFachada(folio);
+    if (data.isNotEmpty) {
+      final fachada = FachadaModel.fromJson(json.decode(data));
+      state = state.copyWith(
+        imagePath: fachada.imagePath,
+        marca: fachada.marca,
+        region: fachada.region,
+        tipoSucursal: fachada.tipoSucursal,
+        gerente: fachada.gerente,
+        telefonoContacto: fachada.telefonoContacto,
+      );
+    }
+
+    state = state.copyWith(
+      isLoading: false,
+    );
+  }
+
+  @override
+  void setImagePath(String path) async {
     state = state.copyWith(imagePath: path);
+    await _preferences.setFachada(state.folio, state.toEncode());
   }
 
   @override
@@ -35,17 +84,20 @@ class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInp
   }
 
   @override
-  void onChangeGerente(String gerente) async {
-    state = state.copyWith(gerente: gerente);
+  void onChangeGerente(String gerenteC) async {
+    state = state.copyWith(gerente: gerenteC);
+    await _preferences.setFachada(state.folio, state.toEncode());
   }
 
   @override
-  void onChangeTelefonoContacto(String telefonoContacto) async {
-    state = state.copyWith(telefonoContacto: telefonoContacto);
+  void onChangeTelefonoContacto(String telefonoContactoC) async {
+    state = state.copyWith(telefonoContacto: telefonoContactoC);
+    await _preferences.setFachada(state.folio, state.toEncode());
   }
 }
 
 abstract class FachadaViewModelInput {
+  void getFachada(String folio);
   void setImagePath(String path);
   void isTaking(bool isTaking);
   void onChangeGerente(String gerente);

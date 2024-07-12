@@ -1,34 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_without_internet/presentation/common/components/label_text_component.dart';
+import 'package:form_without_internet/presentation/hooks/use_launch_effect.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'components/components.dart';
 
-class FachadaView extends ConsumerWidget {
-  const FachadaView({super.key});
+class FachadaView extends HookConsumerWidget {
+  final String folio;
+  const FachadaView({super.key, required this.folio});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(fachadaViewModelProvider.select((value) => (value.imagePath)));
+    useLaunchEffect(
+      () => ref.read(fachadaViewModelProvider.notifier).getFachada(folio),
+    );
     final orientation = MediaQuery.of(context).orientation;
+
+    final (isLoading) = ref.watch(
+      fachadaViewModelProvider.select(
+        (value) => (value.isLoading),
+      ),
+    );
     return Scaffold(
       body: Center(
-        child: orientation == Orientation.landscape
+        child: !isLoading ? orientation == Orientation.landscape
             ? const FachadaViewLandScape()
-            : const FachadaViewPortrait(),
+            : const FachadaViewPortrait()
+            : const CircularProgressIndicator(),
       ),
     );
   }
 }
 
-class FachadaViewLandScape extends ConsumerWidget {
+class FachadaViewLandScape extends StatelessWidget {
   const FachadaViewLandScape({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // final (variable) = ref.watch(provider.select((value) => (value.variable)));
+  Widget build(BuildContext context) {
     return Row(
       children: [
         const Expanded(
@@ -41,23 +50,11 @@ class FachadaViewLandScape extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ContainerPhotoComponent(),
-                    LabelTextComponent(
-                      label: 'Marca',
-                      text: 'Laboratorio Médico del CHOPO',
-                      fontSize: 14,
-                    ),
+                    LabelMarcaComponent(),
                     Gap(10),
-                    LabelTextComponent(
-                      label: 'Región',
-                      text: 'QUERETARO',
-                      fontSize: 14,
-                    ),
+                    LabelRegionComponent(),
                     Gap(10),
-                    LabelTextComponent(
-                      label: 'Tipo sucursal',
-                      text: 'Consultorio',
-                      fontSize: 14,
-                    ),
+                    LabelTipoSucursalComponent(),
                     Gap(20),
                     TextFieldGerenteComponent(),
                     Gap(10),
@@ -89,9 +86,7 @@ class FachadaViewPortrait extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final (variable) = ref.watch(provider.select((value) => (value.variable)));
-    final (image, marca, region, tipoSucursal) = ref.watch(fachadaViewModelProvider
-        .select((value) => (value.imagePath, value.marca, value.region, value.tipoSucursal)));
+    final image = ref.watch(fachadaViewModelProvider.select((value) => (value.imagePath)));
     return Column(
       children: [
         Expanded(
@@ -111,11 +106,11 @@ class FachadaViewPortrait extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Marca: $marca'),
+                          const LabelMarcaComponent(),
                           const Gap(10),
-                          Text('Región: $region'),
+                          const LabelRegionComponent(),
                           const Gap(10),
-                          Text('Tipo sucursal: $tipoSucursal'),
+                          const LabelTipoSucursalComponent(),
                           const Gap(30),
                           const TextFieldGerenteComponent(),
                           const Gap(10),

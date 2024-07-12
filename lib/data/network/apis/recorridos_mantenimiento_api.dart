@@ -27,6 +27,10 @@ class RecorridosMantenimientoApi {
     // Se convierte el json a un objeto RecorridoMantenimientoResponse
     return ListFormsResponse.fromJson(json);
   }
+
+  Future<void> sendForm(Map<String,dynamic> body) async {
+    // Lógica para enviar el formulario
+  }
 }
 
 Future<Map<String, dynamic>> getMapFromJson(String jsonRoot) async {

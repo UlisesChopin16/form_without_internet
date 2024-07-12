@@ -4,10 +4,11 @@ import 'package:form_without_internet/presentation/common/components/label_text_
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view_model/checklist_mantenimiento_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view.dart';
-import 'package:lazy_load_indexed_stack/lazy_load_indexed_stack.dart';
+import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 
 class ChecklistMantenimientoView extends ConsumerWidget {
-  const ChecklistMantenimientoView({super.key});
+  final String folio;
+  const ChecklistMantenimientoView({super.key, required this.folio});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,25 +28,40 @@ class ChecklistMantenimientoView extends ConsumerWidget {
             fontSize: 20,
           ),
           bottom: TabBar(
-            onTap: ref.read(checklistMantenimientoViewModelProvider.notifier).changeTabIndex,
+            onTap: (index) {
+              if (index == currentTab) return;
+              ref.read(listFormsViewModelProvider.notifier).putInloading();
+              ref.read(checklistMantenimientoViewModelProvider.notifier).changeTabIndex(index);
+            },
             tabs: tabs.map((tab) => Tab(text: tab)).toList(),
           ),
         ),
-        body: LazyLoadIndexedStack(
-          index: currentTab,
-          children: const [
-            FachadaView(),
+        body: TabBarView(
+          physics: const NeverScrollableScrollPhysics(),
+          children: [
+            FachadaView(
+              folio: folio,
+            ),
             ListFormsView(
+              folio: folio,
               listOf: 'areas',
+              // section is the correct name
+              section: 'áreas',
             ),
             ListFormsView(
+              folio: folio,
               listOf: 'sanitarios',
+              section: 'sanitarios',
             ),
             ListFormsView(
+              folio: folio,
               listOf: 'servicios',
+              section: 'servicios',
             ),
             ListFormsView(
-              listOf: 'miscelaneo',
+              folio: folio,
+              listOf: 'miscelaneos',
+              section: 'misceláneos',
             ),
           ],
         ),

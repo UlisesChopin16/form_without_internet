@@ -6,7 +6,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class RecorridosMantenimientoView extends HookConsumerWidget {
   const RecorridosMantenimientoView({super.key});
-
+  static const border = BorderSide(
+    width: 1,
+    color: Colors.black,
+  );
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
@@ -26,10 +29,10 @@ class RecorridosMantenimientoView extends HookConsumerWidget {
       'sem',
       'Inicio',
       'Fin',
-      'Responsable',
+      // 'Responsable',
       'Recorrido sucursales',
       'Estatus',
-      'Fecha registro',
+      // 'Fecha registro',
       'Op.',
     ];
 
@@ -49,84 +52,209 @@ class RecorridosMantenimientoView extends HookConsumerWidget {
           ? const Center(
               child: CircularProgressIndicator(),
             )
-          : SingleChildScrollView(
-              child: FittedBox(
-                child: DataTable(
-                  dataRowMaxHeight: double.infinity,
-                  columns: columnNames
-                      .map(
-                        (columnName) => DataColumn(
-                          label: Expanded(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Text(columnName),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
-                  rows: listRecorridos
-                      .map(
-                        (recorrido) => DataRow(
-                          cells: [
-                            DataCell(Text(recorrido.sem.toString())),
-                            DataCell(Text(recorrido.inicio)),
-                            DataCell(Text(recorrido.fin)),
-                            DataCell(Text(recorrido.responsable)),
-                            DataCell(
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: DataTable(
-                                    showCheckboxColumn: false,
-                                    columns: sucursalesColumn
-                                        .map(
-                                          (columnName) => DataColumn(
-                                            label: Text(columnName),
-                                          ),
-                                        )
-                                        .toList(),
-                                    rows: recorrido.recorridoSucursalModels
-                                        .map(
-                                          (sucursal) => DataRow(
-                                            onSelectChanged: (value) {
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const ChecklistMantenimientoView(),
+          : ListView(
+              children: [
+                FittedBox(
+                  child: DataTable(
+                    horizontalMargin: 10,
+                    headingRowHeight: 70,
+                    dataRowMaxHeight: double.infinity,
+                    dividerThickness: 0,
+                    border: const TableBorder(
+                      verticalInside: border,
+                      bottom: border,
+                      top: border,
+                    ),
+                    columns: columnNames
+                        .map(
+                          (columnName) => (columnName == 'Recorrido sucursales')
+                              ? DataColumn(
+                                  label: Expanded(
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(columnName),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                            child: Row(
+                                              children: List.generate(
+                                                sucursalesColumn.length,
+                                                (index) => Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(
+                                                      horizontal: 20.0,
+                                                    ),
+                                                    child: Text(
+                                                      sucursalesColumn[index],
+                                                      textAlign: TextAlign.center,
+                                                    ),
+                                                  ),
                                                 ),
-                                              );
-                                            },
-                                            cells: [
-                                              DataCell(Text(sucursal.folio)),
-                                              DataCell(Text(sucursal.nombre)),
-                                              DataCell(Text(sucursal.tipo)),
-                                              DataCell(Text(sucursal.region)),
-                                              DataCell(Text(sucursal.checklist)),
-                                            ],
+                                              ),
+                                            ),
                                           ),
-                                        )
-                                        .toList(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : DataColumn(
+                                  label: Expanded(
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(columnName),
+                                    ),
+                                  ),
+                                ),
+                        )
+                        .toList(),
+                    rows: listRecorridos
+                        .map(
+                          (recorrido) => DataRow(
+                            cells: [
+                              DataCell(
+                                CenterText(
+                                  text: recorrido.sem.toString(),
+                                ),
+                              ),
+                              DataCell(
+                                CenterText(text: recorrido.inicio),
+                              ),
+                              DataCell(
+                                CenterText(text: recorrido.fin),
+                              ),
+                              // DataCell(
+                              //   Align(
+                              //     alignment: Alignment.center,
+                              //     child: Text(recorrido.responsable),
+                              //   ),
+                              // ),
+                              DataCell(
+                                // placeholder: true,
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Column(
+                                      children: recorrido.recorridoSucursalModels
+                                          .map(
+                                            (sucursal) => InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ChecklistMantenimientoView(
+                                                      folio: sucursal.folio,
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        sucursal.folio,
+                                                        style: const TextStyle(
+                                                          color: Colors.blue,
+                                                          decoration: TextDecoration.underline,
+                                                          decorationColor: Colors.blue,
+                                                          fontWeight: FontWeight.w500,
+                                                          decorationThickness: 1.5,
+                                                        ),
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: ConstrainedBox(
+                                                        constraints: const BoxConstraints(
+                                                          maxWidth: 100,
+                                                        ),
+                                                        child: Text(
+                                                          sucursal.nombre,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          textAlign: TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Text(
+                                                        sucursal.tipo,
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Text(
+                                                        sucursal.region,
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: Text(
+                                                        sucursal.checklist,
+                                                        textAlign: TextAlign.center,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            DataCell(Text(recorrido.status)),
-                            DataCell(Text(recorrido.fechaRegistro)),
-                            DataCell(
-                              IconButton(
-                                icon: const Icon(Icons.edit),
-                                onPressed: () {},
+                              DataCell(
+                                CenterText(
+                                  text: recorrido.status,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                      .toList(),
+                              // DataCell(Text(recorrido.fechaRegistro)),
+                              DataCell(
+                                Center(
+                                  child: Row(
+                                    children: [
+                                      IconButton(
+                                        color: Colors.blue,
+                                        icon: const Icon(Icons.edit_document),
+                                        onPressed: () {},
+                                      ),
+                                      IconButton(
+                                        color: Colors.red,
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () {},
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                        .toList(),
+                  ),
                 ),
-              ),
+              ],
             ),
+    );
+  }
+}
+
+class CenterText extends StatelessWidget {
+  final String text;
+  const CenterText({
+    super.key,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(text),
     );
   }
 }

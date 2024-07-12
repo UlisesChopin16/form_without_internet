@@ -53,6 +53,7 @@ Future<void> initAppModule() async {
     () => RecorridosMantenimientoRepositoryImpl(
       networkInfo: instance(),
       recorridosMantenimientoDataSource: instance(),
+      appPreferences: instance(),
     ),
   );
 

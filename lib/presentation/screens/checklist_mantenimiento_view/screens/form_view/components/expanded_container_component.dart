@@ -13,19 +13,31 @@ class ExpandedContainerComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isExpanded = ref.watch(formViewModelProvider.select((value) => value.isExpanded[index]));
+    final (isExpanded, value) = ref.watch(
+      formViewModelProvider.select(
+        (value) => (
+          value.isExpanded[index],
+          value.questions[index].value,
+        ),
+      ),
+    );
     return Card(
       elevation: 5,
       color: Colors.white,
       margin: const EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
-        side: !isExpanded ?  BorderSide(color: Theme.of(context).colorScheme.primary, width: 3,) : BorderSide.none,
+        side: !isExpanded && value.isEmpty
+            ? BorderSide(
+                color: Theme.of(context).colorScheme.primary,
+                width: 3,
+              )
+            : BorderSide.none,
         borderRadius: BorderRadius.circular(10),
       ),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
-        height: !isExpanded ? height : 300,
+        height: (!isExpanded && value.isEmpty) ? height : 300,
         child: Column(
           children: [
             SizedBox(
@@ -34,7 +46,7 @@ class ExpandedContainerComponent extends ConsumerWidget {
                 indexItem: index,
               ),
             ),
-            if (isExpanded)
+            if (isExpanded || value.isNotEmpty)
               Expanded(
                 child: ExpandedBodyComponent(
                   index: index,

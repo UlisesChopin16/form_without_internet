@@ -1,4 +1,8 @@
+// ignore_for_file: constant_identifier_names
 import 'package:shared_preferences/shared_preferences.dart';
+
+const String FACHADA = 'fachada';
+const String SECTION = 'section';
 
 class AppPreferences {
   final SharedPreferences sharedPreferences;
@@ -7,4 +11,40 @@ class AppPreferences {
 
   // static const String _keyIsFirstTime = 'is_first_time';
   // static const String _keyAccessToken = 'access_token';
+
+  Future<bool> setFachada(String folio, String value) async {
+    final data = await sharedPreferences.setString('$FACHADA$folio', value);
+    return data;
+  }
+
+  String getFachada(String folio) {
+    return sharedPreferences.getString('$FACHADA$folio') ?? '';
+  }
+
+  Future<bool> dropFachada(String folio) async {
+    final data = await sharedPreferences.remove('$FACHADA$folio');
+    return data;
+  }
+
+  Future<bool> setSection({
+    required String folio,
+    required String sectionP,
+    required String value,
+  }) async {
+    final String key = '$SECTION:$sectionP$folio';
+    final data = await sharedPreferences.setString(key, value);
+    return data;
+  }
+
+  String getSection({required String folio, required String sectionP}) {
+    final String key = '$SECTION:$sectionP$folio';
+    final data = sharedPreferences.getString(key) ?? '';
+    return data;
+  }
+
+  Future<bool> dropSection({required String folio, required String sectionP}) async {
+    final String key = '$SECTION:$sectionP$folio';
+    final data = await sharedPreferences.remove(key);
+    return data;
+  }
 }

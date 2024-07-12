@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:form_without_internet/domain/models/list_forms_response_model/list_forms_response_model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -8,6 +10,7 @@ part 'form_view_model.g.dart';
 @freezed
 class FormModel with _$FormModel {
   const factory FormModel({
+    @Default(0) int formIndex,
     @Default('') String title,
     @Default([]) List<QuestionsResponseModel> questions,
     @Default([]) List<bool> isExpanded,
@@ -15,13 +18,16 @@ class FormModel with _$FormModel {
 }
 
 @riverpod
-class FormViewModel extends _$FormViewModel {
+class FormViewModel extends _$FormViewModel implements FormInput {
+  Timer? _timer;
+
   @override
   FormModel build() {
     return const FormModel();
   }
 
-  getQuestions(List<QuestionsResponseModel> questions, String title) {
+  @override
+  getQuestions(List<QuestionsResponseModel> questions, String title, int index) {
     late List<bool> isExpanded = List.generate(
       questions.length,
       (index) => false,
@@ -30,34 +36,68 @@ class FormViewModel extends _$FormViewModel {
       questions: questions,
       title: title,
       isExpanded: isExpanded,
+      formIndex: index,
     );
   }
 
-  changeSize(int index) {
+  @override
+  void changeSize(int index) {
     List<bool> newIsExpanded = List.from(state.isExpanded);
     newIsExpanded[index] = true;
     state = state.copyWith(isExpanded: newIsExpanded);
   }
 
-  addImage(int index, String imagePath) {
-    List<String> images = List.from(state.questions[index].images);
-    images.add(imagePath);
+  @override
+  List<QuestionsResponseModel> addImages(int index, List<String> images) {
     List<QuestionsResponseModel> newQuestionsResponse = List.from(state.questions);
     newQuestionsResponse[index] = newQuestionsResponse[index].copyWith(images: images);
     state = state.copyWith(questions: newQuestionsResponse);
+    return newQuestionsResponse;
   }
 
-  deleteImage(int indexItem, int indexImage) {
+  @override
+  void deleteImage(int indexItem, int indexImage,
+      {required void Function(List<QuestionsResponseModel>) onDelete}) {
     List<String> images = List.from(state.questions[indexItem].images);
     images.removeAt(indexImage);
     List<QuestionsResponseModel> newQuestionsResponse = List.from(state.questions);
     newQuestionsResponse[indexItem] = newQuestionsResponse[indexItem].copyWith(images: images);
     state = state.copyWith(questions: newQuestionsResponse);
+    onDelete(newQuestionsResponse);
   }
 
-  changeValue(int indexItem, String value) {
+  @override
+  void changeValue(int indexItem, String value) {
     List<QuestionsResponseModel> newQuestionsResponse = List.from(state.questions);
     newQuestionsResponse[indexItem] = newQuestionsResponse[indexItem].copyWith(value: value);
+
     state = state.copyWith(questions: newQuestionsResponse);
   }
+
+  @override
+  void onChangeDescription(int indexItem, String value,
+      {required void Function(List<QuestionsResponseModel>) onSave}) async {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+    _timer = Timer(const Duration(seconds: 1), () {
+      List<QuestionsResponseModel> newQuestionsResponse = List.from(state.questions);
+      newQuestionsResponse[indexItem] =
+          newQuestionsResponse[indexItem].copyWith(description: value);
+      state = state.copyWith(questions: newQuestionsResponse);
+      onSave(newQuestionsResponse);
+      _timer!.cancel();
+    });
+  }
+}
+
+abstract class FormInput {
+  void getQuestions(List<QuestionsResponseModel> questions, String title, int index);
+  void changeSize(int index);
+  List<QuestionsResponseModel> addImages(int index, List<String> imagePath);
+  void deleteImage(int indexItem, int indexImage,
+      {required void Function(List<QuestionsResponseModel>) onDelete});
+  void changeValue(int indexItem, String value);
+  void onChangeDescription(int indexItem, String value,
+      {required void Function(List<QuestionsResponseModel> questions) onSave});
 }

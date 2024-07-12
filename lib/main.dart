@@ -11,6 +11,14 @@ void main() async {
     SystemUiMode.manual,
     overlays: SystemUiOverlay.values,
   );
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+    DeviceOrientation.landscapeLeft,
+    DeviceOrientation.landscapeRight,
+  ]);
+  
   runApp(
     const ProviderScope(
       child: MyApp(),

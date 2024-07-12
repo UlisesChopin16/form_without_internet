@@ -5,7 +5,7 @@ import 'package:form_without_internet/domain/models/list_forms_response_model/li
 extension ListFormsMapper on ListFormsResponse {
   ListFormsResponseModel toDomain() {
     return ListFormsResponseModel(
-      data: data?.map((e) => e.toDomain()).toList(),
+      data: data?.map((e) => e.toDomain()).toList() ?? [],
     );
   }
 }

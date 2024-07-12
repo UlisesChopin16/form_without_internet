@@ -9,11 +9,19 @@ part 'list_forms_view_model.g.dart';
 
 @freezed
 class ListFormsModel with _$ListFormsModel {
+  const ListFormsModel._();
   const factory ListFormsModel({
+    @Default('') String folio,
     @Default(false) bool isLoading,
     @Default('') String listOf,
     @Default([]) List<SectionResponseModel> data,
   }) = _ListFormsModel;
+
+  ListFormsResponseModel toSent() {
+    return ListFormsResponseModel(
+      data: data,
+    );
+  }
 }
 
 @riverpod
@@ -26,10 +34,13 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
   }
 
   @override
-  void getForms(String section) async {
-    state = state.copyWith(isLoading: true);
-
-    final data = await _useCase.execute(section);
+  void getForms(List<String> contain) async {
+    state = state.copyWith(
+      isLoading: true,
+      listOf: contain[0],
+      folio: contain[1],
+    );
+    final data = await _useCase.execute(contain);
 
     // organizar la lista por active y title
     final List<SectionResponseModel> dataSource = List.from(data.data!);
@@ -47,7 +58,17 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
   }
 
   @override
-  void changeState(bool value, int index) {
+  void sendForms() async {
+    final data = state.toSent();
+    await _useCase.sendForm(
+      body: data,
+      section: state.listOf,
+      folio: state.folio,
+    );
+  }
+
+  @override
+  void changeState(bool value, int index) async {
     List<SectionResponseModel> newData = List.from(state.data);
     newData[index] = newData[index].copyWith(active: value);
     // organizar la lista por active y title
@@ -58,6 +79,8 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
       return a.active ? -1 : 1;
     });
     state = state.copyWith(data: newData);
+
+    sendForms();
   }
 
   @override
@@ -65,6 +88,7 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
     List<int> completedsAndNot = [];
     int completeds = 0;
     int notCompleteds = 0;
+
     for (var element in state.data[index].questionsResponseModel) {
       if (element.value.isNotEmpty) {
         completeds++;
@@ -72,14 +96,33 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
         notCompleteds++;
       }
     }
+
     completedsAndNot.add(completeds);
     completedsAndNot.add(notCompleteds);
     return completedsAndNot;
   }
+
+  @override
+  void getQuestions(List<QuestionsResponseModel> questions, int index) {
+    state = state.copyWith(
+      isLoading: true,
+    );
+    List<SectionResponseModel> newData = List.from(state.data);
+    newData[index] = newData[index].copyWith(questionsResponseModel: questions);
+    state = state.copyWith(data: newData, isLoading: false);
+
+    sendForms();
+  }
+
+  putInloading() {
+    state = state.copyWith(isLoading: true);
+  }
 }
 
 abstract class ListFormsInput {
-  void getForms(String section);
+  void sendForms();
+  void getForms(List<String> data);
   void changeState(bool value, int index);
+  void getQuestions(List<QuestionsResponseModel> questions, int index);
   List<int> getCompletedsAndNot(int index);
 }

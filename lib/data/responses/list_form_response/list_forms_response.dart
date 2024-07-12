@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'list_forms_response.freezed.dart';
@@ -5,11 +7,21 @@ part 'list_forms_response.g.dart';
 
 @freezed
 class ListFormsResponse with _$ListFormsResponse {
+  const ListFormsResponse._();
+
   const factory ListFormsResponse({
     @JsonKey(name: 'data') List<Section>? data,
   }) = _ListFormsResponse;
 
   factory ListFormsResponse.fromJson(Map<String, dynamic> json) => _$ListFormsResponseFromJson(json);
+
+  String toEncoded() {
+    return json.encode(
+      ListFormsResponse(
+        data: data,
+      ).toJson(),
+    );
+  }
 }
 
 @freezed

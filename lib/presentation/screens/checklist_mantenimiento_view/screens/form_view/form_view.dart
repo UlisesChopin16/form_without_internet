@@ -7,28 +7,21 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'components/components.dart';
 
 class FormView extends HookConsumerWidget {
+  final int formIndex;
   final String title;
   final List<QuestionsResponseModel> questions;
-  const FormView({super.key, required this.questions, required this.title});
+  const FormView({super.key, required this.questions, required this.title, required this.formIndex});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useLaunchEffect(
-      () => ref.read(formViewModelProvider.notifier).getQuestions(questions, title),
+      () => ref.read(formViewModelProvider.notifier).getQuestions(questions, title, formIndex),
     );
     final isExpanded = ref.watch(formViewModelProvider.select((value) => value.isExpanded));
 
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-        actions: [
-          Switch(
-            value: true,
-            onChanged: (value) {
-              Navigator.of(context).pop(value);
-            },
-          )
-        ],
       ),
       body: Center(
         child: isExpanded.isEmpty

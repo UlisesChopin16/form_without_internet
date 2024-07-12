@@ -20,7 +20,7 @@ class ActiveContainerBodyComponent extends ConsumerWidget {
     final completedsAndNot =
         ref.read(listFormsViewModelProvider.notifier).getCompletedsAndNot(index);
     return AnimatedOpacity(
-      duration: Duration(milliseconds: isActive ? 500 : 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       opacity: isActive ? 1 : 0,
       child: Column(
