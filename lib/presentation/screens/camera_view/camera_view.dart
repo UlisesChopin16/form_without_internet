@@ -1,10 +1,10 @@
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:camerawesome/pigeon.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:form_without_internet/presentation/common/components/container_image_component.dart';
 import 'package:form_without_internet/presentation/screens/camera_view/camera_view_model.dart/camera_view_model.dart';
 import 'package:form_without_internet/presentation/screens/camera_view/components/camera_button.dart';
+import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/form_view/form_view_model/form_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:form_without_internet/types/photo_type.dart';
@@ -23,128 +23,128 @@ class CameraView extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<CameraView> createState() => _CameraViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _CameraViewState();
 }
 
-class _CameraViewState extends ConsumerState<CameraView> with SingleTickerProviderStateMixin {
+class _CameraViewState extends ConsumerState<CameraView> {
   @override
   void initState() {
-    // ref.read(cameraViewModelProvider.notifier).setPhotoType(widget.photoType);
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(cameraViewModelProvider.notifier).setPhotoType(widget.photoType);
       ref.read(cameraViewModelProvider.notifier).setImages(widget.images);
     });
   }
 
   @override
-  void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+
     final double height = MediaQuery.of(context).size.height;
 
-    final (images) = ref.watch(
+    final (imagesr) = ref.watch(
       cameraViewModelProvider.select(
         (value) => (value.images),
       ),
     );
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Camera'),
-      ),
-      body: CameraAwesomeBuilder.awesome(
-        sensorConfig: SensorConfig.single(
-          sensor: Sensor.position(SensorPosition.back),
-          flashMode: FlashMode.auto,
-          aspectRatio: CameraAspectRatios.ratio_16_9,
-          zoom: 0.0,
+    return RotatedBox(
+      quarterTurns: orientation == Orientation.landscape ? 3 : 0,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Camera'),
         ),
-        saveConfig: SaveConfig.photo(
-          pathBuilder: (sensors) => ref
-              .read(cameraViewModelProvider.notifier)
-              .generateImagePath(sensors, widget.photoType),
-          exifPreferences: ExifPreferences(saveGPSLocation: false),
-        ),
-        enablePhysicalButton: true,
-        previewFit: CameraPreviewFit.fitWidth,
-        // middleContentBuilder: (state) => const SizedBox.shrink(),
-        topActionsBuilder: (state) => AwesomeTopActions(
-          state: state,
-          children: [
-            AwesomeFlashButton(state: state),
-            if (state is PhotoCameraState)
-              AwesomeAspectRatioButton(
-                state: state,
-              ),
-            const SizedBox.square(
-              dimension: 50,
-            )
-          ],
-        ),
-        bottomActionsBuilder: (state) => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (images.isNotEmpty)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                height: height * 0.2,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: images.length,
-                  itemBuilder: (context, index) {
-                    // primero, detectamos cuando el usuario acuesta el dispositivo
-                    // si es así, rotamos la imagen
-                    return ContainerImageComponent(
-                      height: height * 0.18,
-                      width: height * 0.18,
-                      image: images[index],
-                      onDelete: () {
-                        ref.read(cameraViewModelProvider.notifier).deleteImage(index);
-                        ref.read(formViewModelProvider.notifier).deleteImage(widget.index, index,
-                            onDelete: (questions) {
-                          final formIndex =
-                              ref.read(formViewModelProvider.select((value) => value.formIndex));
-                          ref
-                              .read(listFormsViewModelProvider.notifier)
-                              .getQuestions(questions, formIndex);
-                        });
-                      },
-                    );
-                  },
+        body: CameraAwesomeBuilder.awesome(
+          sensorConfig: SensorConfig.single(
+            sensor: Sensor.position(SensorPosition.back),
+            flashMode: FlashMode.auto,
+            aspectRatio: CameraAspectRatios.ratio_16_9,
+            zoom: 0.0,
+          ),
+          saveConfig: SaveConfig.photo(
+            pathBuilder: (sensors) => ref
+                .read(cameraViewModelProvider.notifier)
+                .generateImagePath(sensors, widget.photoType),
+            exifPreferences: ExifPreferences(saveGPSLocation: false),
+          ),
+          enablePhysicalButton: true,
+          previewFit: CameraPreviewFit.fitWidth,
+          // middleContentBuilder: (state) => const SizedBox.shrink(),
+          topActionsBuilder: (state) => AwesomeTopActions(
+            state: state,
+            children: [
+              AwesomeFlashButton(state: state),
+              if (state is PhotoCameraState)
+                AwesomeAspectRatioButton(
+                  state: state,
                 ),
-              ),
-            const Gap(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                state.when(
-                  onPhotoMode: (photoState) => AwesomeOrientedWidget(
-                    child: CameraButton(
-                      takeImage: () => takeImage(
-                        photoState: photoState,
-                        context: context,
+              const SizedBox.square(
+                dimension: 50,
+              )
+            ],
+          ),
+          bottomActionsBuilder: (state) => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (imagesr.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  height: height * 0.2,
+                  child: ListView.builder(
+                    padding: EdgeInsets.only(top: orientation == Orientation.landscape ? 10 : 0),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: imagesr.length,
+                    itemBuilder: (context, index) {
+                      // primero, detectamos cuando el usuario acuesta el dispositivo
+                      // si es así, rotamos la imagen
+                      return RotatedBox(
+                        quarterTurns: orientation == Orientation.landscape ? 1 : 0,
+                        child: ContainerImageComponent(
+                          height: height * 0.18,
+                          width: height * 0.18,
+                          image: imagesr[index],
+                          onDelete: () {
+                            ref.read(cameraViewModelProvider.notifier).deleteImage(index);
+
+                            if (widget.photoType == PhotoType.fachadaSection) {
+                              ref.read(fachadaViewModelProvider.notifier).setImagePath('');
+                              return;
+                            }
+
+                            ref
+                                .read(formViewModelProvider.notifier)
+                                .deleteImage(widget.index, index, onDelete: (questions) {
+                              final formIndex = ref
+                                  .read(formViewModelProvider.select((value) => value.formIndex));
+                              ref
+                                  .read(listFormsViewModelProvider.notifier)
+                                  .getQuestions(questions, formIndex);
+                            });
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              const Gap(10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  state.when(
+                    onPhotoMode: (photoState) => AwesomeOrientedWidget(
+                      child: CameraButton(
+                        takeImage: () => takeImage(
+                          photoState: photoState,
+                          context: context,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const Gap(10),
-          ],
+                ],
+              ),
+              const Gap(10),
+            ],
+          ),
         ),
       ),
     );
@@ -171,10 +171,6 @@ class _CameraViewState extends ConsumerState<CameraView> with SingleTickerProvid
 
       ref.read(cameraViewModelProvider.notifier).isTaking(false);
       if (!context.mounted) return;
-      if (widget.photoType == PhotoType.fachadaSection) {
-        Navigator.of(context).pop(path);
-        return;
-      }
       if (path == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -183,9 +179,14 @@ class _CameraViewState extends ConsumerState<CameraView> with SingleTickerProvid
         );
         return;
       }
+      if (widget.photoType == PhotoType.fachadaSection) {
+        ref.read(fachadaViewModelProvider.notifier).setImagePath(path);
+        ref.read(cameraViewModelProvider.notifier).setImages([path]);
+        return;
+      }
       ref.read(cameraViewModelProvider.notifier).addImage(path);
-      final images = ref.watch(cameraViewModelProvider.select((value) => value.images));
-      final questions = ref.read(formViewModelProvider.notifier).addImages(widget.index, images);
+      final imagesr = ref.watch(cameraViewModelProvider.select((value) => value.images));
+      final questions = ref.read(formViewModelProvider.notifier).addImages(widget.index, imagesr);
       final formIndex = ref.read(formViewModelProvider.select((value) => value.formIndex));
       ref.read(listFormsViewModelProvider.notifier).getQuestions(questions, formIndex);
     } catch (e) {

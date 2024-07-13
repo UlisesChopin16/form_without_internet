@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_without_internet/presentation/hooks/use_launch_effect.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view.dart';
+import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/recorridos_mantenimiento_view.dart';
 import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/recorridos_mantenimiento_view_model/recorridos_mantenimiento_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const NewWidget(),
+      home: const RecorridosMantenimientoView(),
       // home: const NewWidget(),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_without_internet/presentation/screens/camera_view/camera_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
+import 'package:form_without_internet/presentation/screens/image_full_view/image_full_view.dart';
 import 'package:form_without_internet/types/photo_type.dart';
 import 'package:gap/gap.dart';
 
@@ -19,31 +20,32 @@ class ContainerPhotoComponent extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         InkWell(
-          onTap: () async => await onTap(context, ref),
+          onTap: (image.isNotEmpty)
+              ? () => onNextTap(image, context)
+              : () async => await onTap(context, ref, image),
           child: Container(
-            height: orientation == Orientation.portrait ? 350 : 300,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              borderRadius: BorderRadius.circular(10),
-              image: image.isNotEmpty
-                  ? DecorationImage(
-                      image: FileImage(File(image)),
-                      fit: BoxFit.cover,
+              height: orientation == Orientation.portrait ? 350 : 300,
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(10),
+                image: image.isNotEmpty
+                    ? DecorationImage(
+                        image: FileImage(File(image)),
+                        fit: BoxFit.cover,
+                      )
+                    : null,
+              ),
+              child: image.isEmpty
+                  ? const Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Toma una foto de la fachada de la sucursal'),
+                          Icon(Icons.add_a_photo, size: 65),
+                        ],
+                      ),
                     )
-                  : null,
-            ),
-            child: image.isEmpty
-                ? const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Toma una foto de la fachada de la sucursal'),
-                        Icon(Icons.add_a_photo, size: 65),
-                      ],
-                    ),
-                  )
-                : null
-          ),
+                  : null),
         ),
         const Gap(10),
         if (image.isNotEmpty)
@@ -61,7 +63,7 @@ class ContainerPhotoComponent extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () async => await onTap(context, ref),
+                onPressed: () async => await onTap(context, ref, image),
                 child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -77,10 +79,16 @@ class ContainerPhotoComponent extends ConsumerWidget {
     );
   }
 
-  Future<void> onTap(BuildContext context, WidgetRef ref) async {
+  onNextTap(String image, BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => ImageFullView(image: image)),
+    );
+  }
+
+  Future<void> onTap(BuildContext context, WidgetRef ref, String image) async {
     final path = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => const CameraView(photoType: PhotoType.fachadaSection,),
+        builder: (context) => CameraView(photoType: PhotoType.fachadaSection, images: image.isNotEmpty ? [image] : []),
       ),
     );
     if (path != null) {

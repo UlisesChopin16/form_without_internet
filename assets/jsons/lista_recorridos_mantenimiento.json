@@ -10,15 +10,36 @@
                     "folio": "FOLIO-001",
                     "nombre": "SAN MIGUEL DE ALLENDE adsfadfadsfadsf",
                     "tipo": "Tipo 1",
-                    "region": "Region 1",
-                    "checklist": "Checklist 1"
+                    "region": "QUERETARO",
+                    "checklist": "Completado"
                 },
                 {
                     "folio": "FOLIO-002",
                     "nombre": "Sucursal 2",
                     "tipo": "Tipo 2",
                     "region": "Region 2",
-                    "checklist": "Checklist 2"
+                    "checklist": "Completado"
+                },
+                {
+                    "folio": "FOLIO-003",
+                    "nombre": "Sucursal 3",
+                    "tipo": "Tipo 3",
+                    "region": "Region 3",
+                    "checklist": "En curso"
+                },
+                {
+                    "folio": "FOLIO-004",
+                    "nombre": "Sucursal 4",
+                    "tipo": "Tipo 4",
+                    "region": "Region 4",
+                    "checklist": "En curso"
+                },
+                {
+                    "folio": "FOLIO-005",
+                    "nombre": "Sucursal 5",
+                    "tipo": "Tipo 5",
+                    "region": "Region 5",
+                    "checklist": "Pendiente"
                 }
             ],
             "status": "Pendiente",
@@ -31,26 +52,40 @@
             "responsable": "Pedro Perez",
             "recorrido_sucursales": [
                 {
-                    "folio": "FOLIO-003",
+                    "folio": "FOLIO-006",
                     "nombre": "Sucursal 3",
                     "tipo": "Tipo 3",
                     "region": "Region 3",
-                    "checklist": "Checklist 3"
+                    "checklist": "Pendiente"
                 },
                 {
-                    "folio": "FOLIO-004",
+                    "folio": "FOLIO-007",
                     "nombre": "Sucursal 4",
                     "tipo": "Tipo 4",
                     "region": "Region 4",
-                    "checklist": "Checklist 4"
+                    "checklist": "Pendiente"
                 },
                 {
-                    "folio": "FOLIO-005",
+                    "folio": "FOLIO-008",
                     "nombre": "Sucursal 5",
                     "tipo": "Tipo 5",
                     "region": "Region 5",
-                    "checklist": "Checklist 5"
+                    "checklist": "En curso"
                     
+                },
+                {
+                    "folio": "FOLIO-009",
+                    "nombre": "Sucursal 6",
+                    "tipo": "Tipo 6",
+                    "region": "Region 6",
+                    "checklist": "En curso"
+                },
+                {
+                    "folio": "FOLIO-010",
+                    "nombre": "Sucursal 7",
+                    "tipo": "Tipo 7",
+                    "region": "Region 7",
+                    "checklist": "Completado"
                 }
             ],
             "status": "Pendiente",

@@ -33,6 +33,48 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
 
     state = state.copyWith(data: data.data, isLoading: false);
   }
+
+  Map<String,dynamic> cantidades(List<RecorridoSucursalModel> recorridosSucursal) {
+    final List<List<RecorridoSucursalModel>> recorridos = [];
+    final List<RecorridoSucursalModel> pendientesL = [];
+    final List<RecorridoSucursalModel> enCursoL = [];
+    final List<RecorridoSucursalModel> finalizadosL = [];
+    final List<int> cantidades = [];
+    int totales = recorridosSucursal.length;
+    int pendientes = 0;
+    int enCurso = 0;
+    int finalizados = 0;
+
+    for (var recorrido in recorridosSucursal) {
+      if (recorrido.checklist == 'Pendiente') {
+        pendientes++;
+        pendientesL.add(recorrido);
+      } else if (recorrido.checklist == 'En curso') {
+        enCurso++;
+        enCursoL.add(recorrido);
+      } else if (recorrido.checklist == 'Completado') {
+        finalizados++;
+        finalizadosL.add(recorrido);
+      }
+    }
+    
+    recorridos.add(pendientesL);
+    recorridos.add(enCursoL);
+    recorridos.add(finalizadosL);
+
+    cantidades.add(totales);
+    cantidades.add(pendientes);
+    cantidades.add(enCurso);
+    cantidades.add(finalizados);
+
+
+
+    return {
+      'recorridos': recorridos,
+      'cantidades': cantidades,
+    };
+  
+  }
 }
 
 abstract class RecorridosMantenimientoInput {

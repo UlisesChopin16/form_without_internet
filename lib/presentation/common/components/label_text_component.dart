@@ -5,11 +5,13 @@ class LabelTextComponent extends StatelessWidget {
   final String text;
   final double fontSize;
   final Color colorText;
+  final TextStyle? style;
   const LabelTextComponent({
     super.key,
     required this.label,
     required this.text,
-    required this.fontSize,
+    this.fontSize = 14,
+    this.style,
     this.colorText = Colors.black,
   });
 
@@ -29,7 +31,7 @@ class LabelTextComponent extends StatelessWidget {
           ),
           TextSpan(
             text: text,
-            style: TextStyle(
+            style: style ?? TextStyle(
               color: colorText,
               fontSize: fontSize + 3,
             ),
