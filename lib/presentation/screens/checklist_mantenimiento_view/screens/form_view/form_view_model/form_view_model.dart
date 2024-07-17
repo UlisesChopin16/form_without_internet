@@ -30,7 +30,12 @@ class FormViewModel extends _$FormViewModel implements FormInput {
   getQuestions(List<QuestionsResponseModel> questions, String title, int index) {
     late List<bool> isExpanded = List.generate(
       questions.length,
-      (index) => false,
+      (index) {
+        if (questions[index].value.isNotEmpty && questions[index].value != 'No aplica') {
+          return true;
+        }
+        return false;
+      },
     );
     state = state.copyWith(
       questions: questions,
@@ -43,7 +48,11 @@ class FormViewModel extends _$FormViewModel implements FormInput {
   @override
   void changeSize(int index) {
     List<bool> newIsExpanded = List.from(state.isExpanded);
+    if(state.questions[index].value == 'No aplica') {
+      newIsExpanded[index] = false;
+    } else {
     newIsExpanded[index] = true;
+    }
     state = state.copyWith(isExpanded: newIsExpanded);
   }
 

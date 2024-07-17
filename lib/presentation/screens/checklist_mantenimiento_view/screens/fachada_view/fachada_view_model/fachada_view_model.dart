@@ -14,9 +14,10 @@ class FachadaModel with _$FachadaModel {
 
   const factory FachadaModel({
     @Default(false) bool isLoading,
+    @Default(false) bool isImageTaken,
+    @Default(false) bool isResume,
     @Default('') String imagePath,
     @Default('') String folio,
-    @Default(false) bool isImageTaken,
     @Default('Laboratorio Medico del CHOPO') String marca,
     @Default('QUERETARO') String region,
     @Default('Consultorio') String tipoSucursal,
@@ -49,10 +50,11 @@ class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInp
   }
 
   @override
-  void getFachada(String folio) async {
+  void getFachada(String folio, bool isResume) async {
     state = state.copyWith(
       isLoading: true,
       folio: folio,
+      isResume: isResume,
     );
     final data = _preferences.getFachada(folio);
     if (data.isNotEmpty) {
@@ -70,6 +72,10 @@ class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInp
     state = state.copyWith(
       isLoading: false,
     );
+  }
+
+  setIsResume(bool isResume) {
+    state = state.copyWith(isResume: isResume);
   }
 
   @override
@@ -97,7 +103,7 @@ class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInp
 }
 
 abstract class FachadaViewModelInput {
-  void getFachada(String folio);
+  void getFachada(String folio, bool isResume);
   void setImagePath(String path);
   void isTaking(bool isTaking);
   void onChangeGerente(String gerente);

@@ -13,7 +13,8 @@ class ContainerPhotoComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final image = ref.watch(fachadaViewModelProvider.select((value) => (value.imagePath)));
+    final (image, isResume) =
+        ref.watch(fachadaViewModelProvider.select((value) => (value.imagePath, value.isResume)));
     final orientation = MediaQuery.of(context).orientation;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -24,31 +25,32 @@ class ContainerPhotoComponent extends ConsumerWidget {
               ? () => onNextTap(image, context, ref)
               : () async => await onTap(context, ref, image),
           child: Container(
-              height: orientation == Orientation.portrait ? 350 : 300,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(10),
-                image: image.isNotEmpty
-                    ? DecorationImage(
-                        image: FileImage(File(image)),
-                        fit: BoxFit.cover,
-                      )
-                    : null,
-              ),
-              child: image.isEmpty
-                  ? const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Toma una foto de la fachada de la sucursal'),
-                          Icon(Icons.add_a_photo, size: 65),
-                        ],
-                      ),
+            height: orientation == Orientation.portrait ? 350 : 300,
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              borderRadius: BorderRadius.circular(10),
+              image: image.isNotEmpty
+                  ? DecorationImage(
+                      image: FileImage(File(image)),
+                      fit: BoxFit.cover,
                     )
-                  : null),
+                  : null,
+            ),
+            child: image.isEmpty
+                ? const Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Toma una foto de la fachada de la sucursal'),
+                        Icon(Icons.add_a_photo, size: 65),
+                      ],
+                    ),
+                  )
+                : null,
+          ),
         ),
-        const Gap(10),
-        if (image.isNotEmpty)
+        if (!isResume && image.isNotEmpty) const Gap(10),
+        if (image.isNotEmpty && !isResume)
           Align(
             alignment: Alignment.center,
             child: Padding(

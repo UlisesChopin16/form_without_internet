@@ -34,17 +34,17 @@ class ImageFullViewModel extends _$ImageFullViewModel {
 
   void deleteImage({
     int indexI = 0,
-    required void Function(int) onDelete,
+    required void Function(int)? onDelete,
   }) {
     if (state.images.isNotEmpty) {
       state = state.copyWith(
         images: [...state.images]..removeAt(indexI),
         index: indexI == state.images.length - 1 ? indexI - 1 : indexI,
       );
-      onDelete(indexI);
+      onDelete?.call(indexI);
       return;
     }
-    onDelete(indexI);
+    onDelete?.call(indexI);
   }
 
   void onChangeImage(int index) {

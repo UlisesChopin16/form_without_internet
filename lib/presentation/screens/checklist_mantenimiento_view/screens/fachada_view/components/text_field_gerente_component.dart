@@ -10,15 +10,20 @@ class TextFieldGerenteComponent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
     final controller = useTextEditingController();
-    final gerente = ref.watch(fachadaViewModelProvider.select((value) => (value.gerente)));
+    final (gerente, isResume) =
+        ref.watch(fachadaViewModelProvider.select((value) => (value.gerente, value.isResume)));
     controller.text = gerente;
     return TextFormField(
       // keyboard.next
       controller: controller,
+      style: const TextStyle(fontSize: 16.0, color: Colors.black),
       onChanged: ref.read(fachadaViewModelProvider.notifier).onChangeGerente,
-      decoration: const InputDecoration(
+
+      decoration: InputDecoration(
         labelText: 'Gerente de sucursal',
-        border: OutlineInputBorder(),
+        enabled: isResume ? false : true,
+        border: const OutlineInputBorder(),
+        disabledBorder: const OutlineInputBorder(),
       ),
     );
   }

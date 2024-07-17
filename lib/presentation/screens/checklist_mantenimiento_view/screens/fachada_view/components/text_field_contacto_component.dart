@@ -10,16 +10,19 @@ class TextFieldContactoComponent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
     final controller = useTextEditingController();
-    final contacto =
-        ref.watch(fachadaViewModelProvider.select((value) => (value.telefonoContacto)));
+    final (contacto, isResume) = ref.watch(
+        fachadaViewModelProvider.select((value) => (value.telefonoContacto, value.isResume)));
     controller.text = contacto;
     return TextFormField(
       controller: controller,
+      style: const TextStyle(fontSize: 16.0, color: Colors.black),
       onChanged: ref.read(fachadaViewModelProvider.notifier).onChangeTelefonoContacto,
-      decoration: const InputDecoration(
+      decoration: InputDecoration(
         labelText: 'No. de contacto',
         hintText: 'Teléfono o celular',
-        border: OutlineInputBorder(),
+        enabled: isResume ? false : true,
+        border: const OutlineInputBorder(),
+        disabledBorder: const OutlineInputBorder(),
       ),
     );
   }

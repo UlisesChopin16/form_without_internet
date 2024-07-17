@@ -9,14 +9,16 @@ class ImageFullView extends HookConsumerWidget {
   final String image;
   final List<String> images;
   final int index;
-  final void Function(int) onDelete;
+  final bool isDelete;
+  final void Function(int)? onDelete;
 
   const ImageFullView({
     super.key,
     this.image = '',
     this.images = const [],
     this.index = 0,
-    required this.onDelete,
+    this.onDelete,
+    this.isDelete = true,
   });
 
   @override
@@ -41,22 +43,23 @@ class ImageFullView extends HookConsumerWidget {
                   padding: const EdgeInsets.all(20.0),
                   child: ContainerImageComponent(
                     onDelete: () {
-                      onDelete(0);
+                      onDelete?.call(0);
                       if (fullImages.length == 1) {
                         Navigator.pop(context);
                       }
                     },
+                    isDelete: isDelete,
                     image: (fullImages.length == 1) ? fullImages[0] : image,
                     height: height,
                     width: width,
                     boxFit: boxFit,
-                    onTapped: false,
                   ),
                 )
               : Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 20),
                   child: PageViewComponent(
                     onDelete: onDelete,
+                    isDelete: isDelete,
                   ),
                 ),
         ),

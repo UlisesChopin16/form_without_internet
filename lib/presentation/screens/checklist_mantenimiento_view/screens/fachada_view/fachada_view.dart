@@ -8,12 +8,13 @@ import 'components/components.dart';
 
 class FachadaView extends HookConsumerWidget {
   final String folio;
-  const FachadaView({super.key, required this.folio});
+  final bool isResume;
+  const FachadaView({super.key, required this.folio, required this.isResume});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useLaunchEffect(
-      () => ref.read(fachadaViewModelProvider.notifier).getFachada(folio),
+      () => ref.read(fachadaViewModelProvider.notifier).getFachada(folio, isResume),
     );
     final orientation = MediaQuery.of(context).orientation;
 
@@ -98,7 +99,8 @@ class FachadaViewPortrait extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final image = ref.watch(fachadaViewModelProvider.select((value) => (value.imagePath)));
+    final (image, isResume) =
+        ref.watch(fachadaViewModelProvider.select((value) => (value.imagePath, value.isResume)));
     return ListView(
       children: [
         SizedBox(
@@ -128,7 +130,7 @@ class FachadaViewPortrait extends ConsumerWidget {
                           const TextFieldGerenteComponent(),
                           const Gap(10),
                           const TextFieldContactoComponent(),
-                          if (image.isNotEmpty) const Gap(80) else const Gap(10),
+                          if (image.isNotEmpty && !isResume) const Gap(80) else const Gap(10),
                         ],
                       ),
                     )

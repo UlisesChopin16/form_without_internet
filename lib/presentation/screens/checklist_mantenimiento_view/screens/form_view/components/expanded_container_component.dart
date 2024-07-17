@@ -21,7 +21,7 @@ class ExpandedContainerComponent extends ConsumerWidget {
         ),
       ),
     );
-    print(value);
+    print('isExpanded: $isExpanded');
     return Card(
       elevation: 5,
       color: Colors.white,
@@ -38,7 +38,7 @@ class ExpandedContainerComponent extends ConsumerWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
-        height: (!isExpanded && value.isEmpty || value == 'No aplica') ? height : 300,
+        height: (!isExpanded) ? height : 300,
         child: Column(
           children: [
             SizedBox(
@@ -47,7 +47,7 @@ class ExpandedContainerComponent extends ConsumerWidget {
                 indexItem: index,
               ),
             ),
-            if (isExpanded && value.isNotEmpty && value != 'No aplica')
+            if (isExpanded)
               Expanded(
                 child: ExpandedBodyComponent(
                   index: index,

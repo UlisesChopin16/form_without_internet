@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:form_without_internet/constants/icons_manager.dart';
 import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model/recorridos_mantenimiento_response_model.dart';
 import 'package:form_without_internet/presentation/common/components/close_button_component.dart';
-import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view.dart';
+import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/components/button_popup_detalle_sucursal_component.dart';
 import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/components/label_content_component.dart';
-import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart';
 import 'package:gap/gap.dart';
 
 class PopupDetalleSucursalComponent extends StatelessWidget {
@@ -18,7 +16,6 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isCompleted = recorrido.checklist == StatusRecorridoSucursalType.completado;
     return AlertDialog(
       backgroundColor: Colors.white,
       title: Padding(
@@ -174,41 +171,7 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
           children: [
             const CloseButtonComponent(),
             const Gap(10),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                elevation: 3,
-                backgroundColor: isCompleted ? Colors.green[900] : Colors.grey[800],
-                iconColor: Colors.white,
-                foregroundColor: Colors.white,
-                surfaceTintColor: Colors.white,
-                textStyle: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ChecklistMantenimientoView(
-                      folio: recorrido.folio,
-                    ),
-                  ),
-                );
-              },
-              child: Row(
-                children: [
-                  Icon(isCompleted ? IconsManager.resumeAssigment : IconsManager.realizeAssigment),
-                  const Gap(5),
-                  Text(
-                    isCompleted
-                        ? 'Ver resumen del CheckList'
-                        : 'Realizar checklist de mantenimiento',
-                  ),
-                ],
-              ),
-            ),
+            ButtonPopupDetalleSucursalComponent(recorrido: recorrido),
           ],
         ),
       ],

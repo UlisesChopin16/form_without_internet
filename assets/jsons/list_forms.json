@@ -551,7 +551,7 @@
     {
       "id": "7",
       "title": "ADMINISTRACION",
-      "active": true,
+      "active": false,
       "questions": [
         {
           "id": "1",

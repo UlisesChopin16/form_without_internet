@@ -48,13 +48,13 @@ class _CameraViewState extends ConsumerState<CameraView> {
         (value) => (value.images),
       ),
     );
-    return RotatedBox(
-      quarterTurns: orientation == Orientation.landscape ? 3 : 0,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Camera'),
-        ),
-        body: CameraAwesomeBuilder.awesome(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Camera'),
+      ),
+      body: RotatedBox(
+        quarterTurns: orientation == Orientation.landscape ? 3 : 0,
+        child: CameraAwesomeBuilder.awesome(
           sensorConfig: SensorConfig.single(
             sensor: Sensor.position(SensorPosition.back),
             flashMode: FlashMode.auto,

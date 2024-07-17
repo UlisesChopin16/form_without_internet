@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/form_view/form_view.dart';
+import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/components/text_inactive_section_component.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -39,20 +40,10 @@ class ActiveContainerComponent extends ConsumerWidget {
               children: [
                 ActiveContainerHeaderComponent(index: index),
                 Expanded(
-                    child: isActive
-                        ? ActiveContainerBodyComponent(index: index)
-                        : const Center(
-                            child: Text(
-                              'Esta área no aplica para esta sucursal',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          )),
+                  child: isActive
+                      ? ActiveContainerBodyComponent(index: index)
+                      : const TextInactiveSectionComponent(),
+                ),
               ],
             ),
           ),
@@ -87,3 +78,5 @@ class ActiveContainerComponent extends ConsumerWidget {
     // ref.read(provider.notifier).changeTabIndex(index);
   }
 }
+
+

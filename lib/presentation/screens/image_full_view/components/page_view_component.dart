@@ -5,10 +5,12 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PageViewComponent extends ConsumerStatefulWidget {
-  final void Function(int) onDelete;
+  final void Function(int)? onDelete;
+  final bool isDelete;
   const PageViewComponent({
     super.key,
-    required this.onDelete,
+    this.onDelete,
+    this.isDelete = true,
   });
 
   @override
@@ -23,7 +25,6 @@ class _PageViewComponentState extends ConsumerState<PageViewComponent> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    final orientation = MediaQuery.of(context).orientation;
     final (images, indexImage) = ref.watch(
       imageFullViewModelProvider.select(
         (value) => (value.images, value.index),
@@ -48,20 +49,17 @@ class _PageViewComponentState extends ConsumerState<PageViewComponent> {
                     itemCount: images.length,
                     onPageChanged: ref.read(imageFullViewModelProvider.notifier).onChangeImage,
                     itemBuilder: (context, index) {
-                      return FittedBox(
-                        fit: BoxFit.contain,
-                        child: ContainerImageComponent(
-                          onTapped: false,
-                          boxFit: BoxFit.scaleDown,
-                          onDelete: () {
-                            ref
-                                .read(imageFullViewModelProvider.notifier)
-                                .deleteImage(onDelete: widget.onDelete, indexI: index);
-                          },
-                          image: images[index],
-                          height: height,
-                          width: orientation == Orientation.landscape ? width / 2.3 : width * 0.78,
-                        ),
+                      return ContainerImageComponent(
+                        isDelete: widget.isDelete,
+                        boxFit: BoxFit.cover,
+                        onDelete: () {
+                          ref
+                              .read(imageFullViewModelProvider.notifier)
+                              .deleteImage(onDelete: widget.onDelete, indexI: index);
+                        },
+                        image: images[index],
+                        height: height - 55,
+                        width: width - 110,
                       );
                     },
                   ),

@@ -8,17 +8,16 @@ class ContainerImageComponent extends StatelessWidget {
   final double height;
   final double? width;
   final void Function()? onTap;
-  final bool onTapped;
   final BoxFit boxFit;
+  final bool isDelete;
   const ContainerImageComponent({
-    super.key,
-    required this.onDelete,
+    super.key,this.onDelete,
     required this.image,
     required this.height,
     required this.width,
     this.onTap,
-    this.onTapped = true,
     this.boxFit = BoxFit.cover,
+    this.isDelete = true,
   });
 
   @override
@@ -49,6 +48,7 @@ class ContainerImageComponent extends StatelessWidget {
             ),
           ),
           // delete button
+          if (isDelete)
           Positioned(
             top: -5,
             right: -5,

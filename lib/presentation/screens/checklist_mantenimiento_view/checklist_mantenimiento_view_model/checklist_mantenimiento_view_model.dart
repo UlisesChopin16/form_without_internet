@@ -9,6 +9,7 @@ class ChecklistMantenimientoModel with _$ChecklistMantenimientoModel {
   const factory ChecklistMantenimientoModel({
     // Add attributes here
     @Default(0) int currentTabIndex,
+    @Default(0) int currentResumeTabIndex,
     @Default([]) List<String> tabs,
   }) = _ChecklistMantenimientoModel;
 
@@ -34,6 +35,10 @@ class ChecklistMantenimientoViewModel extends _$ChecklistMantenimientoViewModel 
 
   void changeTabIndex(int index) {
     state = state.copyWith(currentTabIndex: index);
+  }
+
+  void changeResumeTabIndex(int index) {
+    state = state.copyWith(currentResumeTabIndex: index);
   }
 
 }
