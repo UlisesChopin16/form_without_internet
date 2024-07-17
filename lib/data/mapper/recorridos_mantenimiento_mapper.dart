@@ -5,7 +5,7 @@ import 'package:form_without_internet/domain/models/recorridos_mantenimiento_res
 extension RecorridosMantenimientoApiMapper on RecorridoSucursal {
   RecorridoSucursalModel toDomain() {
     return RecorridoSucursalModel(
-      checklist: checklist.orEmpty(),
+      checklist: checklist.orPendingSucursal(),
       folio: folio.orEmpty(),
       nombre: nombre.orEmpty(),
       region: region.orEmpty(),
@@ -22,7 +22,7 @@ extension RecorridosMantenimientoDataMapper on RecorridosMantenimientoData {
       fin: fin.orEmpty(),
       fechaRegistro: fechaRegistro.orEmpty(),
       responsable: responsable.orEmpty(),
-      status: status.orEmpty(),
+      status: status.orPending(),
       recorridoSucursalModels: recorridoSucursales?.map((e) => e.toDomain()).toList() ?? [],
     );
   }

@@ -1,19 +1,24 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:form_without_internet/presentation/screens/image_full_view/image_full_view.dart';
 
 class ContainerImageComponent extends StatelessWidget {
   final void Function()? onDelete;
   final String image;
   final double height;
-  final double width;
+  final double? width;
+  final void Function()? onTap;
+  final bool onTapped;
+  final BoxFit boxFit;
   const ContainerImageComponent({
     super.key,
     required this.onDelete,
     required this.image,
     required this.height,
     required this.width,
+    this.onTap,
+    this.onTapped = true,
+    this.boxFit = BoxFit.cover,
   });
 
   @override
@@ -29,21 +34,15 @@ class ContainerImageComponent extends StatelessWidget {
             right: 0,
             bottom: 0,
             child: InkWell(
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ImageFullView(image: image),
-                  ),
-                );
-              },
+              onTap: onTap,
               child: Container(
                 margin: const EdgeInsets.only(right: 10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                   image: DecorationImage(
+                    filterQuality: FilterQuality.high,
                     image: FileImage(File(image)),
-                    fit: BoxFit.cover,
+                    fit: boxFit,
                   ),
                 ),
               ),

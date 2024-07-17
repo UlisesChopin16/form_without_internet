@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:form_without_internet/app/extensions.dart';
 import 'package:form_without_internet/presentation/screens/camera_view/camera_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
-import 'package:form_without_internet/presentation/screens/image_full_view/image_full_view.dart';
 import 'package:form_without_internet/types/photo_type.dart';
 import 'package:gap/gap.dart';
 
@@ -21,7 +21,7 @@ class ContainerPhotoComponent extends ConsumerWidget {
       children: [
         InkWell(
           onTap: (image.isNotEmpty)
-              ? () => onNextTap(image, context)
+              ? () => onNextTap(image, context, ref)
               : () async => await onTap(context, ref, image),
           child: Container(
               height: orientation == Orientation.portrait ? 350 : 300,
@@ -79,16 +79,24 @@ class ContainerPhotoComponent extends ConsumerWidget {
     );
   }
 
-  onNextTap(String image, BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (context) => ImageFullView(image: image)),
+  onNextTap(String image, BuildContext context, WidgetRef ref) {
+    // Navigator.of(context).push(
+    //   MaterialPageRoute(builder: (context) => ImageFullView(image: image)),
+    // );
+    context.showFullImage(
+      image: image,
+      onDelete: (indexImage) {
+        ref.read(fachadaViewModelProvider.notifier).setImagePath('');
+        Navigator.of(context).pop();
+      },
     );
   }
 
   Future<void> onTap(BuildContext context, WidgetRef ref, String image) async {
     final path = await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => CameraView(photoType: PhotoType.fachadaSection, images: image.isNotEmpty ? [image] : []),
+        builder: (context) => CameraView(
+            photoType: PhotoType.fachadaSection, images: image.isNotEmpty ? [image] : []),
       ),
     );
     if (path != null) {

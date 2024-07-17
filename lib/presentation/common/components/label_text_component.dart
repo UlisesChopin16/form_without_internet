@@ -6,19 +6,21 @@ class LabelTextComponent extends StatelessWidget {
   final double fontSize;
   final Color colorText;
   final TextStyle? style;
+  final TextAlign textAlign;
   const LabelTextComponent({
     super.key,
     required this.label,
     required this.text,
     this.fontSize = 14,
     this.style,
+    this.textAlign = TextAlign.center,
     this.colorText = Colors.black,
   });
 
   @override
   Widget build(BuildContext context) {
     return RichText(
-      textAlign: TextAlign.center,
+      textAlign: textAlign,
       text: TextSpan(
         children: [
           TextSpan(

@@ -195,7 +195,7 @@ class NewWidget extends HookConsumerWidget {
                                               ),
                                               Expanded(
                                                 child: ContentTextComponent(
-                                                  sucursal.checklist,
+                                                  sucursal.checklist.name,
                                                 ),
                                               ),
                                             ],
@@ -212,7 +212,7 @@ class NewWidget extends HookConsumerWidget {
                           flex: 2,
                           child: DataCellComponent(
                             child: ContentTextComponent(
-                              recorrido.status,
+                              recorrido.status.value,
                             ),
                           ),
                         ),

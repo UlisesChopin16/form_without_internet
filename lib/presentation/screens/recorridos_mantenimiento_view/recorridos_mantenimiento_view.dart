@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:form_without_internet/constants/strings_manager.dart';
 import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model/recorridos_mantenimiento_response_model.dart';
-import 'package:form_without_internet/presentation/common/components/label_text_component.dart';
+import 'package:form_without_internet/presentation/common/components/center_text_component.dart';
 import 'package:form_without_internet/presentation/hooks/use_launch_effect.dart';
-import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view.dart';
 import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/recorridos_mantenimiento_view_model/recorridos_mantenimiento_view_model.dart';
-import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+import 'components/components.dart';
 
 class RecorridosMantenimientoView extends StatefulHookConsumerWidget {
   const RecorridosMantenimientoView({super.key});
@@ -20,28 +21,15 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
   //   color: Colors.black,
   // );
 
-  static const List<String> columnNames = [
-    'sem',
-    'Inicio',
-    'Fin',
-    // 'Responsable',
-    'Recorrido sucursales',
-    'Estatus',
-    // 'Fecha registro',
-    'Op.',
+
+  static const List<Color> colors = [
+    Colors.red,
+    Colors.orange,
+    Colors.green,
+    Colors.black,
   ];
 
-  static const List<String> sucursalesColumn = [
-    'Totales',
-    'Pendientes',
-    'En curso',
-    'Completados',
-  ];
 
-  static const Color black = Colors.black;
-  static const Color red = Colors.red;
-  static const Color orange = Colors.orange;
-  static const Color green = Colors.green;
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +59,16 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                 FittedBox(
                   child: DataTable(
                     horizontalMargin: 10,
-                    headingRowHeight: 70,
                     dataRowMaxHeight: double.infinity,
                     dividerThickness: 2,
                     columnSpacing: 30,
-                    columns: columnNames
+                    headingRowHeight: 98,
+                    headingTextStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                    border: const TableBorder(top: BorderSide(width: 2, color: Colors.black)),
+                    columns: StringsManager.columnNames
                         .map(
                           (columnName) => (columnName == 'Recorrido sucursales')
                               ? DataColumn(
@@ -85,24 +78,32 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          Text(columnName),
                                           Padding(
-                                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                                            padding: const EdgeInsets.only(top: 15.0, bottom: 5),
+                                            child: Text(columnName),
+                                          ),
+                                          const Divider(
+                                            thickness: 2,
+                                            color: Colors.black,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 5.0),
                                             child: Row(
-                                              children: List.generate(
-                                                sucursalesColumn.length,
-                                                (index) => Expanded(
-                                                  child: Padding(
-                                                    padding: const EdgeInsets.symmetric(
-                                                      horizontal: 5.0,
+                                              children: StringsManager.sucursalesColumn
+                                                  .map(
+                                                    (sucursal) => Expanded(
+                                                      child: Padding(
+                                                        padding: const EdgeInsets.symmetric(
+                                                          horizontal: 5.0,
+                                                        ),
+                                                        child: Text(
+                                                          sucursal,
+                                                          textAlign: TextAlign.center,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    child: Text(
-                                                      sucursalesColumn[index],
-                                                      textAlign: TextAlign.center,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
+                                                  )
+                                                  .toList(),
                                             ),
                                           ),
                                         ],
@@ -122,72 +123,54 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                         .toList(),
                     rows: listRecorridos.map(
                       (recorrido) {
+                        final index = listRecorridos.indexOf(recorrido);
                         final cantidades = ref
                             .read(recorridosMantenimientoViewModelProvider.notifier)
                             .cantidades(recorrido.recorridoSucursalModels);
-                        final cantidadRecorridos = cantidades['recorridos'];
-                        final numeroCantidades = cantidades['cantidades'];
+                        final List<List<RecorridoSucursalModel>> cantidadRecorridos = cantidades['recorridos'];
+                        final List<int> numeroCantidades = cantidades['cantidades'];
+                        cantidadRecorridos.add(recorrido.recorridoSucursalModels);
+                        final cells = [
+                          recorrido.sem.toString(),
+                          recorrido.inicio,
+                          recorrido.fin,
+                          // recorrido.responsable,
+                        ];
                         return DataRow(
+                          selected: ref
+                              .read(recorridosMantenimientoViewModelProvider.notifier)
+                              .trueOrFalse(index),
                           cells: [
-                            DataCell(
-                              CenterText(
-                                text: recorrido.sem.toString(),
+                            ...cells.map(
+                              (cell) => DataCell(
+                                CenterTextComponent(
+                                  text: cell,
+                                ),
                               ),
                             ),
-                            DataCell(
-                              CenterText(text: recorrido.inicio),
-                            ),
-                            DataCell(
-                              CenterText(text: recorrido.fin),
-                            ),
-                            // DataCell(
-                            //   Align(
-                            //     alignment: Alignment.center,
-                            //     child: Text(recorrido.responsable),
-                            //   ),
-                            // ),
                             DataCell(
                               Row(
-                                children: [
-                                  // totales
-                                  Expanded(
-                                    child: CantidadesTextComponent(
-                                      onTap: () =>
-                                          onTap(recorrido.recorridoSucursalModels, 0, black),
-                                      text: numeroCantidades[0].toString(),
-                                      color: black,
-                                    ),
-                                  ),
-                                  // pendientes
-                                  Expanded(
-                                    child: CantidadesTextComponent(
-                                      onTap: () => onTap(cantidadRecorridos[0], 1, red),
-                                      text: numeroCantidades[1].toString(),
-                                      color: red,
-                                    ),
-                                  ),
-                                  // en curso
-                                  Expanded(
-                                    child: CantidadesTextComponent(
-                                      onTap: () => onTap(cantidadRecorridos[1], 2, orange),
-                                      text: numeroCantidades[2].toString(),
-                                      color: orange,
-                                    ),
-                                  ),
-                                  // completados
-                                  Expanded(
-                                    child: CantidadesTextComponent(
-                                      onTap: () => onTap(cantidadRecorridos[2], 3, green),
-                                      text: numeroCantidades[3].toString(),
-                                      color: green,
-                                    ),
-                                  ),
-                                ],
+                                children: cantidadRecorridos
+                                    .map(
+                                      (recorridos) {
+                                        final index = cantidadRecorridos.indexOf(recorridos);
+                                        return Expanded(
+                                          child: CantidadesTextComponent(
+                                            onTap: () => onTap(recorridos, index, colors[index]),
+                                            text: numeroCantidades[index].toString(),
+                                            color: colors[index],
+                                          ),
+                                        );
+                                      }
+                                    )
+                                    .toList()
                               ),
                             ),
                             DataCell(
-                              CenterText(
-                                text: recorrido.status,
+                              CenterTextComponent(
+                                text: recorrido.status.value,
+                                style: TextStyle(
+                                    color: recorrido.status.color, fontWeight: FontWeight.bold),
                               ),
                             ),
                             // DataCell(Text(recorrido.fechaRegistro)),
@@ -220,131 +203,19 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
     );
   }
 
-  onTap(List<RecorridoSucursalModel> recorridos, int index, Color color) {
-    showDialog(
+  onTap(List<RecorridoSucursalModel> recorridos, int index, Color color) async {
+    ref.read(recorridosMantenimientoViewModelProvider.notifier).getListFiltered(recorridos);
+    await showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text(
-            'Recorridos ${sucursalesColumn[index]}',
-            style: TextStyle(
-              color: color,
-            ),
-          ),
-          content: FittedBox(
-            child: SizedBox(
-              height: recorridos.length < 3 ? 200 : 400,
-              width: 400,
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 5.0,
-                  crossAxisSpacing: 5.0,
-                ),
-                itemCount: recorridos.length,
-                itemBuilder: (context, index) {
-                  final recorrido = recorridos[index];
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ChecklistMantenimientoView(
-                            folio: recorrido.folio,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Card(
-                      elevation: 6,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10.0,
-                          vertical: 25,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(right: 15.0),
-                              child: Text(
-                                recorrido.nombre,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  color: color,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                LabelTextComponent(
-                                  label: 'Folio',
-                                  text: recorrido.folio,
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.blue,
-                                    fontWeight: FontWeight.w500,
-                                    decorationThickness: 1.5,
-                                  ),
-                                ),
-                                const Gap(5),
-                                // Text('Tipo: ${recorrido.tipo}'),
-                                LabelTextComponent(
-                                  label: 'Tipo',
-                                  text: recorrido.tipo,
-                                ),
-                                const Gap(5),
-                                LabelTextComponent(
-                                  label: 'Región',
-                                  text: recorrido.region,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cerrar'),
-            ),
-          ],
+        return PopupSucursalesComponent(
+          color: color,
+          index: index,
         );
       },
     );
-  }
-}
 
-class CenterText extends StatelessWidget {
-  final String text;
-  final TextStyle? style;
-  const CenterText({
-    super.key,
-    required this.text,
-    this.style,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Text(
-        text,
-        style: style,
-      ),
-    );
+    ref.read(recorridosMantenimientoViewModelProvider.notifier).cleanListFiltered();
   }
 }
 
@@ -361,17 +232,25 @@ class CantidadesTextComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: CenterText(
-        text: text,
-        style: TextStyle(
-          color: color,
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-          decoration: TextDecoration.underline,
-          decorationColor: color,
-          decorationThickness: 1,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+      child: ElevatedButton(
+        onPressed: onTap,
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          backgroundColor: color,
+          elevation: 3,
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        ),
+        child: CenterTextComponent(
+          text: text,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
         ),
       ),
     );

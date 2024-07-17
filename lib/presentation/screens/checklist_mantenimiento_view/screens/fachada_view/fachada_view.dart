@@ -24,10 +24,20 @@ class FachadaView extends HookConsumerWidget {
     );
     return Scaffold(
       body: Center(
-        child: !isLoading ? orientation == Orientation.landscape
-            ? const FachadaViewLandScape()
-            : const FachadaViewPortrait()
-            : const CircularProgressIndicator(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final height = constraints.maxHeight;
+            final width = constraints.maxWidth;
+            return !isLoading
+                ? orientation == Orientation.landscape
+                    ? const FachadaViewLandScape()
+                    : FachadaViewPortrait(
+                        height,
+                        width,
+                      )
+                : const CircularProgressIndicator();
+          },
+        ),
       ),
     );
   }
@@ -82,14 +92,17 @@ class FachadaViewLandScape extends StatelessWidget {
 }
 
 class FachadaViewPortrait extends ConsumerWidget {
-  const FachadaViewPortrait({super.key});
+  final double height;
+  final double width;
+  const FachadaViewPortrait(this.height, this.width, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final image = ref.watch(fachadaViewModelProvider.select((value) => (value.imagePath)));
-    return Column(
+    return ListView(
       children: [
-        Expanded(
+        SizedBox(
+          height: height * 0.5,
           child: Center(
             child: SingleChildScrollView(
               child: Padding(
@@ -125,7 +138,8 @@ class FachadaViewPortrait extends ConsumerWidget {
             ),
           ),
         ),
-        Expanded(
+        SizedBox(
+          height: height * 0.5,
           child: Padding(
             padding: const EdgeInsets.only(
               bottom: 15.0,

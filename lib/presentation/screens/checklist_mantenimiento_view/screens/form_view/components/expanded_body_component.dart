@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:form_without_internet/app/extensions.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/form_view/form_view_model/form_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:gap/gap.dart';
@@ -53,7 +54,7 @@ class ExpandedBodyComponent extends HookConsumerWidget {
                   );
                 },
                 decoration: const InputDecoration(
-                  hintText: 'Descripciónes',
+                  hintText: 'Comentarios',
                   fillColor: Colors.white,
                   filled: true,
                   border: OutlineInputBorder(),
@@ -82,19 +83,34 @@ class ExpandedBodyComponent extends HookConsumerWidget {
                         child: ListView.builder(
                           itemCount: images.length,
                           scrollDirection: Axis.horizontal,
+                          physics: const AlwaysScrollableScrollPhysics(),
                           itemBuilder: (context, indexImage) => ContainerImageComponent(
                             image: images[indexImage],
                             height: heightC,
                             width: width,
+                            onTap: () {
+                              context.showFullImage(
+                                images: images,
+                                index: index,
+                                onDelete: (indexImage) {
+                                  ref.read(formViewModelProvider.notifier).deleteImage(
+                                        index,
+                                        indexImage,
+                                        onDelete: (questions) => ref
+                                            .read(listFormsViewModelProvider.notifier)
+                                            .getQuestions(questions, formIndex),
+                                      );
+                                  if (images.length == 1) {
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                              );
+                            },
                             onDelete: () => ref.read(formViewModelProvider.notifier).deleteImage(
-                              index,
-                              indexImage,
-                              onDelete: (questions) {
-                                ref
+                                index, indexImage,
+                                onDelete: (questions) => ref
                                     .read(listFormsViewModelProvider.notifier)
-                                    .getQuestions(questions, formIndex);
-                              },
-                            ),
+                                    .getQuestions(questions, formIndex)),
                           ),
                         ),
                       ),
@@ -108,4 +124,6 @@ class ExpandedBodyComponent extends HookConsumerWidget {
       ),
     );
   }
+
+  onDelte() {}
 }

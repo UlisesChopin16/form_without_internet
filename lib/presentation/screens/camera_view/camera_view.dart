@@ -1,6 +1,7 @@
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:camerawesome/pigeon.dart';
 import 'package:flutter/material.dart';
+import 'package:form_without_internet/app/extensions.dart';
 import 'package:form_without_internet/presentation/common/components/container_image_component.dart';
 import 'package:form_without_internet/presentation/screens/camera_view/camera_view_model.dart/camera_view_model.dart';
 import 'package:form_without_internet/presentation/screens/camera_view/components/camera_button.dart';
@@ -103,24 +104,24 @@ class _CameraViewState extends ConsumerState<CameraView> {
                           height: height * 0.18,
                           width: height * 0.18,
                           image: imagesr[index],
-                          onDelete: () {
-                            ref.read(cameraViewModelProvider.notifier).deleteImage(index);
-
-                            if (widget.photoType == PhotoType.fachadaSection) {
-                              ref.read(fachadaViewModelProvider.notifier).setImagePath('');
+                          onTap: () {
+                            if (imagesr.length == 1) {
+                              context.showFullImage(
+                                image: imagesr[index],
+                                onDelete: (indexImage) {
+                                  onDelete(index);
+                                  Navigator.of(context).pop();
+                                },
+                              );
                               return;
                             }
-
-                            ref
-                                .read(formViewModelProvider.notifier)
-                                .deleteImage(widget.index, index, onDelete: (questions) {
-                              final formIndex = ref
-                                  .read(formViewModelProvider.select((value) => value.formIndex));
-                              ref
-                                  .read(listFormsViewModelProvider.notifier)
-                                  .getQuestions(questions, formIndex);
-                            });
+                            context.showFullImage(
+                              images: imagesr,
+                              index: index,
+                              onDelete: onDelete,
+                            );
                           },
+                          onDelete: () => onDelete(index),
                         ),
                       );
                     },
@@ -148,6 +149,21 @@ class _CameraViewState extends ConsumerState<CameraView> {
         ),
       ),
     );
+  }
+
+  void onDelete(int index) {
+    ref.read(cameraViewModelProvider.notifier).deleteImage(index);
+
+    if (widget.photoType == PhotoType.fachadaSection) {
+      ref.read(fachadaViewModelProvider.notifier).setImagePath('');
+      return;
+    }
+
+    ref.read(formViewModelProvider.notifier).deleteImage(widget.index, index,
+        onDelete: (questions) {
+      final formIndex = ref.read(formViewModelProvider.select((value) => value.formIndex));
+      ref.read(listFormsViewModelProvider.notifier).getQuestions(questions, formIndex);
+    });
   }
 
   Future takeImage({

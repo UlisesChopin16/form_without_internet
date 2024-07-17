@@ -1,3 +1,5 @@
+import 'package:form_without_internet/types/status_recorrido_mantenimiento_type.dart';
+import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recorridos_mantenimiento_response_model.freezed.dart';
@@ -20,7 +22,7 @@ class RecorridosMantenimientoResponseModelData with _$RecorridosMantenimientoRes
     required String fin,
     required String responsable,
     required List<RecorridoSucursalModel> recorridoSucursalModels,
-    required String status,
+    required StatusRecorridoMantenimientoType status,
     required String fechaRegistro,
   }) = _RecorridoMantenimientoResponseModel;
 
@@ -35,7 +37,7 @@ class RecorridoSucursalModel with _$RecorridoSucursalModel {
     required String nombre,
     required String tipo,
     required String region,
-    required String checklist,
+    required StatusRecorridoSucursalType checklist,
   }) = _RecorridoSucursalModel;
 
   factory RecorridoSucursalModel.fromJson(Map<String, dynamic> json) =>

@@ -2,13 +2,13 @@
     "data": [
         {
             "sem": 1,
-            "inicio": "2021-01-01",
-            "fin": "2021-01-07",
+            "inicio": "01/Jul/2024",
+            "fin": "07/Jul/2024",
             "responsable": "Juan Perez",
             "recorrido_sucursales": [
                 {
                     "folio": "FOLIO-001",
-                    "nombre": "SAN MIGUEL DE ALLENDE adsfadfadsfadsf",
+                    "nombre": "SAN MIGUEL DE ALLENDE",
                     "tipo": "Tipo 1",
                     "region": "QUERETARO",
                     "checklist": "Completado"
@@ -43,12 +43,12 @@
                 }
             ],
             "status": "Pendiente",
-            "fecha_registro": "2021-01-08"
+            "fecha_registro": "08/Jul/2024"
         },
         {
             "sem": 2,
-            "inicio": "2021-01-08",
-            "fin": "2021-01-14",
+            "inicio": "08/Jul/2024",
+            "fin": "14/Jul/2024",
             "responsable": "Pedro Perez",
             "recorrido_sucursales": [
                 {
@@ -88,9 +88,98 @@
                     "checklist": "Completado"
                 }
             ],
+            "status": "En curso",
+            "fecha_registro": "08/Jul/2024"
+        },
+        {
+            "sem": 3,
+            "inicio": "15/Jul/2024",
+            "fin": "21/Jul/2024",
+            "responsable": "Juan Perez",
+            "recorrido_sucursales": [
+                {
+                    "folio": "FOLIO-011",
+                    "nombre": "Sucursal 8",
+                    "tipo": "Tipo 8",
+                    "region": "Region 8",
+                    "checklist": "Completado"
+                },
+                {
+                    "folio": "FOLIO-012",
+                    "nombre": "Sucursal 9",
+                    "tipo": "Tipo 9",
+                    "region": "Region 9",
+                    "checklist": "Completado"
+                },
+                {
+                    "folio": "FOLIO-013",
+                    "nombre": "Sucursal 10",
+                    "tipo": "Tipo 10",
+                    "region": "Region 10",
+                    "checklist": "En curso"
+                },
+                {
+                    "folio": "FOLIO-014",
+                    "nombre": "Sucursal 11",
+                    "tipo": "Tipo 11",
+                    "region": "Region 11",
+                    "checklist": "En curso"
+                },
+                {
+                    "folio": "FOLIO-015",
+                    "nombre": "Sucursal 12",
+                    "tipo": "Tipo 12",
+                    "region": "Region 12",
+                    "checklist": "Pendiente"
+                }
+            ],
             "status": "Pendiente",
-            "fecha_registro": "2021-01-08"
+            "fecha_registro": "08/Jul/2024"
+        },
+        {
+            "sem": 4,
+            "inicio": "22/Jul/2024",
+            "fin": "28/Jul/2024",
+            "responsable": "Pedro Perez",
+            "recorrido_sucursales": [
+                {
+                    "folio": "FOLIO-016",
+                    "nombre": "Sucursal 13",
+                    "tipo": "Tipo 13",
+                    "region": "Region 13",
+                    "checklist": "Pendiente"
+                },
+                {
+                    "folio": "FOLIO-017",
+                    "nombre": "Sucursal 14",
+                    "tipo": "Tipo 14",
+                    "region": "Region 14",
+                    "checklist": "Pendiente"
+                },
+                {
+                    "folio": "FOLIO-018",
+                    "nombre": "Sucursal 15",
+                    "tipo": "Tipo 15",
+                    "region": "Region 15",
+                    "checklist": "En curso"
+                },
+                {
+                    "folio": "FOLIO-019",
+                    "nombre": "Sucursal 16",
+                    "tipo": "Tipo 16",
+                    "region": "Region 16",
+                    "checklist": "En curso"
+                },
+                {
+                    "folio": "FOLIO-020",
+                    "nombre": "Sucursal 17",
+                    "tipo": "Tipo 17",
+                    "region": "Region 17",
+                    "checklist": "Completado"
+                }
+            ],
+            "status": "Completado",
+            "fecha_registro": "08/Jul/2024"
         }
-        
     ]
 }

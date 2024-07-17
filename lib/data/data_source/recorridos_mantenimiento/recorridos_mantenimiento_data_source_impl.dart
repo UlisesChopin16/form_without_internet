@@ -10,19 +10,19 @@ class RecorridosMantenimientoDataSourceImpl implements RecorridosMantenimientoDa
   RecorridosMantenimientoDataSourceImpl({required this.recorridosMantenimientoApi});
 
   @override
-  Future<RecorridosMantenimientoResponse> getRecorridosMantenimientoDS() {
-    final response = recorridosMantenimientoApi.getRecorridosMantenimiento();
+  Future<RecorridosMantenimientoResponse> getRecorridosMantenimientoDS() async {
+    final response = await recorridosMantenimientoApi.getRecorridosMantenimiento();
     return response;
   }
 
   @override
-  Future<ListFormsResponse> getListFormsDS() {
-    final response = recorridosMantenimientoApi.getListForms();
+  Future<ListFormsResponse> getListFormsDS() async {
+    final response = await recorridosMantenimientoApi.getListForms();
     return response;
   }
   
   @override
-  Future<void> sendFormDS(ListFormsResponseModel body) {
-    return recorridosMantenimientoApi.sendForm(body.toJson());
+  Future<void> sendFormDS(ListFormsResponseModel body) async {
+    return await recorridosMantenimientoApi.sendForm(body.toJson());
   }
 }
