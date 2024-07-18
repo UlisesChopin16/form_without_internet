@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_without_internet/constants/icons_manager.dart';
 import 'package:form_without_internet/constants/strings_manager.dart';
+import 'package:form_without_internet/presentation/common/components/saving_data_component.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view_model/checklist_mantenimiento_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
@@ -19,6 +20,12 @@ class ChecklistMantenimientoView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final viewInsets = MediaQuery.of(context).viewInsets;
+    final (isSaving, isSaved) = ref.watch(
+      fachadaViewModelProvider .select(
+        (value) => (value.isSaving, value.isSaved),
+      ),
+    );
     final (tabs, currentTab) = ref.watch(
       checklistMantenimientoViewModelProvider.select(
         (value) => (value.tabs, value.currentTabIndex),
@@ -37,6 +44,9 @@ class ChecklistMantenimientoView extends ConsumerWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
+          actions: [
+            SavingDataComponent(isSaving: isSaving, isSaved: isSaved)
+          ],
           bottom: TabBar(
             onTap: (index) {
               if (index == currentTab) return;
@@ -58,6 +68,7 @@ class ChecklistMantenimientoView extends ConsumerWidget {
             FachadaView(
               folio: folio,
               isResume: isResume,
+              viewInsets: viewInsets,
             ),
             ...StringsManager.dataSection.map(
               (section) => !isResume

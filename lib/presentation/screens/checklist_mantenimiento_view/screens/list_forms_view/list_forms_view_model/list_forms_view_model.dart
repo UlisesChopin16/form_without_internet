@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:form_without_internet/app/dep_inject.dart';
 import 'package:form_without_internet/domain/models/list_forms_response_model/list_forms_response_model.dart';
 import 'package:form_without_internet/domain/usecases/list_forms_use_case.dart';
@@ -13,6 +15,8 @@ class ListFormsModel with _$ListFormsModel {
   const factory ListFormsModel({
     @Default('') String folio,
     @Default(false) bool isLoading,
+    @Default(false) bool isSaving,
+    @Default(false) bool isSaved,
     @Default('') String listOf,
     @Default([]) List<SectionResponseModel> data,
   }) = _ListFormsModel;
@@ -27,6 +31,7 @@ class ListFormsModel with _$ListFormsModel {
 @riverpod
 class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput {
   final ListFormsUseCase _useCase = instance<ListFormsUseCase>();
+  Timer? _timerSave;
 
   @override
   ListFormsModel build() {
@@ -65,10 +70,12 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
       section: state.listOf,
       folio: state.folio,
     );
+    putInSaved();
   }
 
   @override
   void changeState(bool value, int index) async {
+    putInSaving();
     List<SectionResponseModel> newData = List.from(state.data);
     newData[index] = newData[index].copyWith(active: value);
     // organizar la lista por active y title
@@ -104,6 +111,7 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
 
   @override
   void getQuestions(List<QuestionsResponseModel> questions, int index) {
+    putInSaving();
     state = state.copyWith(
       isLoading: true,
     );
@@ -116,6 +124,25 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
 
   putInloading() {
     state = state.copyWith(isLoading: true);
+  }
+
+  putInSaving() {
+    _timerSave?.cancel();
+    state = state.copyWith(isSaving: true, isSaved: false);
+  }
+
+  void putInSaved() {
+    if (_timerSave != null) {
+      _timerSave!.cancel();
+    }
+    state = state.copyWith(
+      isSaving: false,
+      isSaved: true,
+    );
+    // await Future.delayed(const Duration(seconds: 2));
+    _timerSave = Timer(const Duration(seconds: 2), () {
+      state = state.copyWith(isSaved: false);
+    });
   }
 }
 

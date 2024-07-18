@@ -54,7 +54,7 @@ class ContainerPhotoComponent extends ConsumerWidget {
           Align(
             alignment: Alignment.center,
             child: Padding(
-              padding: EdgeInsets.only(bottom: orientation == Orientation.portrait ? 0 : 30),
+              padding: EdgeInsets.only(bottom: orientation == Orientation.portrait ? 0 : 15),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(

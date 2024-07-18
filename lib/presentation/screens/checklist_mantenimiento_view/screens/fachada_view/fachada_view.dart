@@ -9,7 +9,9 @@ import 'components/components.dart';
 class FachadaView extends HookConsumerWidget {
   final String folio;
   final bool isResume;
-  const FachadaView({super.key, required this.folio, required this.isResume});
+  final EdgeInsets viewInsets;
+  const FachadaView(
+      {super.key, required this.folio, required this.isResume, this.viewInsets = EdgeInsets.zero});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,10 +33,15 @@ class FachadaView extends HookConsumerWidget {
             final width = constraints.maxWidth;
             return !isLoading
                 ? orientation == Orientation.landscape
-                    ? const FachadaViewLandScape()
+                    ? FachadaViewLandScape(
+                        height,
+                        width,
+                        viewInsets,
+                      )
                     : FachadaViewPortrait(
                         height,
                         width,
+                        viewInsets,
                       )
                 : const CircularProgressIndicator();
           },
@@ -44,48 +51,67 @@ class FachadaView extends HookConsumerWidget {
   }
 }
 
-class FachadaViewLandScape extends StatelessWidget {
-  const FachadaViewLandScape({super.key});
+class FachadaViewLandScape extends ConsumerWidget {
+  final double widht;
+  final double height;
+  final EdgeInsets viewInsets;
+  const FachadaViewLandScape(
+    this.height,
+    this.widht,
+    this.viewInsets, {
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
-    return Row(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final (image, isResume) = ref.watch(
+      fachadaViewModelProvider.select(
+        (value) => (value.imagePath, value.isResume),
+      ),
+    );
+    return ListView(
       children: [
-        const Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: Align(
-              alignment: Alignment.center,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ContainerPhotoComponent(),
-                    LabelMarcaComponent(),
-                    Gap(10),
-                    LabelRegionComponent(),
-                    Gap(10),
-                    LabelTipoSucursalComponent(),
-                    Gap(20),
-                    TextFieldGerenteComponent(),
-                    Gap(10),
-                    TextFieldContactoComponent(),
-                  ],
+        Row(
+          children: [
+            SizedBox(
+              width: widht * 0.5,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const ContainerPhotoComponent(),
+                      if (image.isEmpty || isResume) const Gap(30),
+                      const LabelMarcaComponent(),
+                      const Gap(10),
+                      const LabelRegionComponent(),
+                      const Gap(10),
+                      const LabelTipoSucursalComponent(),
+                      const Gap(20),
+                      const TextFieldGerenteComponent(),
+                      const Gap(10),
+                      const TextFieldContactoComponent(),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(15),
+            SizedBox(
+              width: widht * 0.5,
+              height: height + viewInsets.bottom,
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ],
     );
@@ -95,7 +121,8 @@ class FachadaViewLandScape extends StatelessWidget {
 class FachadaViewPortrait extends ConsumerWidget {
   final double height;
   final double width;
-  const FachadaViewPortrait(this.height, this.width, {super.key});
+  final EdgeInsets viewInsets;
+  const FachadaViewPortrait(this.height, this.width, this.viewInsets, {super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -104,44 +131,42 @@ class FachadaViewPortrait extends ConsumerWidget {
     return ListView(
       children: [
         SizedBox(
-          height: height * 0.5,
+          height: (height * 0.5) + (viewInsets.bottom * 0.5),
           child: Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Expanded(
-                      child: ContainerPhotoComponent(),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const Expanded(
+                    child: ContainerPhotoComponent(),
+                  ),
+                  const Gap(30),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const LabelMarcaComponent(),
+                        const Gap(10),
+                        const LabelRegionComponent(),
+                        const Gap(10),
+                        const LabelTipoSucursalComponent(),
+                        const Gap(30),
+                        const TextFieldGerenteComponent(),
+                        const Gap(10),
+                        const TextFieldContactoComponent(),
+                        if (image.isNotEmpty && !isResume) const Gap(80) else const Gap(10),
+                      ],
                     ),
-                    const Gap(30),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const LabelMarcaComponent(),
-                          const Gap(10),
-                          const LabelRegionComponent(),
-                          const Gap(10),
-                          const LabelTipoSucursalComponent(),
-                          const Gap(30),
-                          const TextFieldGerenteComponent(),
-                          const Gap(10),
-                          const TextFieldContactoComponent(),
-                          if (image.isNotEmpty && !isResume) const Gap(80) else const Gap(10),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
+                  )
+                ],
               ),
             ),
           ),
         ),
         SizedBox(
-          height: height * 0.5,
+          height: (height * 0.5) + (viewInsets.bottom * 0.5),
           child: Padding(
             padding: const EdgeInsets.only(
               bottom: 15.0,
@@ -156,6 +181,7 @@ class FachadaViewPortrait extends ConsumerWidget {
             ),
           ),
         ),
+        const Gap(50),
       ],
     );
   }

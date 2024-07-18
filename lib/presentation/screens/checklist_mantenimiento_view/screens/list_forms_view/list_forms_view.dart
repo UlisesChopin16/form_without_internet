@@ -10,7 +10,8 @@ class ListFormsView extends HookConsumerWidget {
   final String section;
   final String listOf;
   final String folio;
-  const ListFormsView({super.key, required this.listOf, required this.folio, required this.section});
+  const ListFormsView(
+      {super.key, required this.listOf, required this.folio, required this.section});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,18 +20,20 @@ class ListFormsView extends HookConsumerWidget {
       () => ref.read(listFormsViewModelProvider.notifier).getForms([listOf, folio]),
     );
 
-    final (forms, isLoading) = ref.watch(
+    final (forms, isLoading, isSaving, isSaved) = ref.watch(
       listFormsViewModelProvider.select(
-        (value) => (value.data, value.isLoading),
+        (value) => (value.data, value.isLoading, value.isSaving, value.isSaved),
       ),
     );
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
     return Scaffold(
         body: !isLoading
             ? Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10.0,
-                  vertical: 25.0,
+                padding: const EdgeInsets.only(
+                  right: 10.0,
+                  left: 10.0,
+                  top: 10.0,
+                  bottom: 25,
                 ),
                 child: forms.isNotEmpty
                     ? GridView.builder(

@@ -12,6 +12,8 @@ class FormModel with _$FormModel {
   const factory FormModel({
     @Default(0) int formIndex,
     @Default('') String title,
+    @Default(false) bool isSaving,
+    @Default(false) bool isSaved,
     @Default([]) List<QuestionsResponseModel> questions,
     @Default([]) List<bool> isExpanded,
   }) = _FormModel;
@@ -20,6 +22,7 @@ class FormModel with _$FormModel {
 @riverpod
 class FormViewModel extends _$FormViewModel implements FormInput {
   Timer? _timer;
+  Timer? _timerSave;
 
   @override
   FormModel build() {
@@ -48,10 +51,10 @@ class FormViewModel extends _$FormViewModel implements FormInput {
   @override
   void changeSize(int index) {
     List<bool> newIsExpanded = List.from(state.isExpanded);
-    if(state.questions[index].value == 'No aplica') {
+    if (state.questions[index].value == 'No aplica') {
       newIsExpanded[index] = false;
     } else {
-    newIsExpanded[index] = true;
+      newIsExpanded[index] = true;
     }
     state = state.copyWith(isExpanded: newIsExpanded);
   }
@@ -66,36 +69,62 @@ class FormViewModel extends _$FormViewModel implements FormInput {
 
   @override
   void deleteImage(int indexItem, int indexImage,
-      {required void Function(List<QuestionsResponseModel>) onDelete}) {
+      {required void Function(List<QuestionsResponseModel>) onDelete}) async {
+    putInSaving();
     List<String> images = List.from(state.questions[indexItem].images);
     images.removeAt(indexImage);
     List<QuestionsResponseModel> newQuestionsResponse = List.from(state.questions);
     newQuestionsResponse[indexItem] = newQuestionsResponse[indexItem].copyWith(images: images);
     state = state.copyWith(questions: newQuestionsResponse);
     onDelete(newQuestionsResponse);
+    putInSaved();
   }
 
   @override
-  void changeValue(int indexItem, String value) {
+  void changeValue(int indexItem, String value) async {
+    putInSaving();
     List<QuestionsResponseModel> newQuestionsResponse = List.from(state.questions);
     newQuestionsResponse[indexItem] = newQuestionsResponse[indexItem].copyWith(value: value);
 
     state = state.copyWith(questions: newQuestionsResponse);
+    putInSaved();
   }
 
   @override
   void onChangeDescription(int indexItem, String value,
       {required void Function(List<QuestionsResponseModel>) onSave}) async {
+    putInSaving();
     if (_timer != null) {
       _timer!.cancel();
     }
-    _timer = Timer(const Duration(seconds: 1), () {
+    _timer = Timer(const Duration(seconds: 1), () async {
+      _timer!.cancel();
       List<QuestionsResponseModel> newQuestionsResponse = List.from(state.questions);
       newQuestionsResponse[indexItem] =
           newQuestionsResponse[indexItem].copyWith(description: value);
       state = state.copyWith(questions: newQuestionsResponse);
       onSave(newQuestionsResponse);
-      _timer!.cancel();
+
+      putInSaved();
+    });
+  }
+
+  putInSaving() {
+    _timerSave?.cancel();
+    state = state.copyWith(isSaving: true, isSaved: false);
+  }
+
+  void putInSaved() {
+    if (_timerSave != null) {
+      _timerSave!.cancel();
+    }
+    state = state.copyWith(
+      isSaving: false,
+      isSaved: true,
+    );
+    // await Future.delayed(const Duration(seconds: 2));
+    _timerSave = Timer(const Duration(seconds: 2), () {
+      state = state.copyWith(isSaved: false);
     });
   }
 }

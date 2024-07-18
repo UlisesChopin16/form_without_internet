@@ -15,21 +15,17 @@ class ExpandedContainerComponent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final (isExpanded, value) = ref.watch(
       formViewModelProvider.select(
-        (value) => (
-          value.isExpanded[index],
-          value.questions[index].value,
-        ),
+        (value) => (value.isExpanded[index], value.questions[index].value),
       ),
     );
-    print('isExpanded: $isExpanded');
     return Card(
-      elevation: 5,
+      elevation: !isExpanded ? 1 : 2,
       color: Colors.white,
       margin: const EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
-        side: !isExpanded && value.isEmpty
-            ? BorderSide(
-                color: Theme.of(context).colorScheme.primary,
+        side: !isExpanded && value != 'No aplica'
+            ? const BorderSide(
+                color: Colors.red,
                 width: 3,
               )
             : BorderSide.none,

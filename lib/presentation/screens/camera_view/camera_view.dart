@@ -205,7 +205,9 @@ class _CameraViewState extends ConsumerState<CameraView> {
       final questions = ref.read(formViewModelProvider.notifier).addImages(widget.index, imagesr);
       final formIndex = ref.read(formViewModelProvider.select((value) => value.formIndex));
       ref.read(listFormsViewModelProvider.notifier).getQuestions(questions, formIndex);
+      ref.read(formViewModelProvider.notifier).putInSaved();
     } catch (e) {
+      if (!context.mounted) return;
       ref.read(cameraViewModelProvider.notifier).isTaking(false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:form_without_internet/app/app_preferences.dart';
@@ -16,6 +17,8 @@ class FachadaModel with _$FachadaModel {
     @Default(false) bool isLoading,
     @Default(false) bool isImageTaken,
     @Default(false) bool isResume,
+    @Default(false) bool isSaving,
+    @Default(false) bool isSaved,
     @Default('') String imagePath,
     @Default('') String folio,
     @Default('Laboratorio Medico del CHOPO') String marca,
@@ -43,6 +46,8 @@ class FachadaModel with _$FachadaModel {
 @riverpod
 class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInput {
   final AppPreferences _preferences = instance<AppPreferences>();
+  Timer? _timer;
+  Timer? _timerSave;
 
   @override
   FachadaModel build() {
@@ -80,8 +85,10 @@ class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInp
 
   @override
   void setImagePath(String path) async {
+    putInSaving();
     state = state.copyWith(imagePath: path);
     await _preferences.setFachada(state.folio, state.toEncode());
+    putInSaved();
   }
 
   @override
@@ -91,14 +98,47 @@ class FachadaViewModel extends _$FachadaViewModel implements FachadaViewModelInp
 
   @override
   void onChangeGerente(String gerenteC) async {
+    _timer?.cancel();
+    putInSaving();
     state = state.copyWith(gerente: gerenteC);
-    await _preferences.setFachada(state.folio, state.toEncode());
+    _timer = Timer(const Duration(seconds: 1), () async {
+      _timer!.cancel();
+      await _preferences.setFachada(state.folio, state.toEncode());
+      putInSaved();
+    });
   }
 
   @override
   void onChangeTelefonoContacto(String telefonoContactoC) async {
+    // state = state.copyWith(telefonoContacto: telefonoContactoC);
+    // await _preferences.setFachada(state.folio, state.toEncode());
+    _timer?.cancel();
+    putInSaving();
     state = state.copyWith(telefonoContacto: telefonoContactoC);
-    await _preferences.setFachada(state.folio, state.toEncode());
+    _timer = Timer(const Duration(seconds: 1), () async {
+      _timer!.cancel();
+      await _preferences.setFachada(state.folio, state.toEncode());
+      putInSaved();
+    });
+  }
+
+  putInSaving() {
+    _timerSave?.cancel();
+    state = state.copyWith(isSaving: true, isSaved: false);
+  }
+
+  void putInSaved() {
+    if (_timerSave != null) {
+      _timerSave!.cancel();
+    }
+    state = state.copyWith(
+      isSaving: false,
+      isSaved: true,
+    );
+    // await Future.delayed(const Duration(seconds: 2));
+    _timerSave = Timer(const Duration(seconds: 2), () {
+      state = state.copyWith(isSaved: false);
+    });
   }
 }
 
