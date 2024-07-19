@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:form_without_internet/presentation/screens/camera_view/camera_view.dart';
+import 'package:form_without_internet/presentation/screens/camera_view/components/camera_body.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/form_view/form_view_model/form_view_model.dart';
 import 'package:form_without_internet/types/photo_type.dart';
 
@@ -54,7 +54,7 @@ class ContainerAddImageComponent extends ConsumerWidget {
         ref.watch(formViewModelProvider.select((value) => value.questions[index].images));
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => CameraView(
+        builder: (context) => CameraBody(
           photoType: PhotoType.descriptionQuestions,
           index: index,
           images: images,

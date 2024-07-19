@@ -40,5 +40,22 @@ end
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_ios_build_settings(target)
+
+    # init config use iOS 11
+    target.build_configurations.each do |config|
+        config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+    end
+    # fin config use iOS 11
+
+    # init config permission
+    target.build_configurations.each do |config|
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+            '$(inherited)',
+            # dart: PermissionGroup.camera
+            'PERMISSION_CAMERA=1'
+          ]
+        end
+    # fin config permission
+    
   end
 end

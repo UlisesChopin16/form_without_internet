@@ -30,8 +30,6 @@
 	<true/>
 	<key>NSCachesDirectory</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>La aplicación requiere el permiso de la camara</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -57,5 +55,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- Permiso de la camara -->
+	<key>NSCameraUsageDescription</key>
+	<string>La aplicación requiere el permiso de la camara</string>
 </dict>
 </plist>
