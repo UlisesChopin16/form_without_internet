@@ -22,48 +22,69 @@ class PermissionSectionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const Gap(20),
-          LottieBuilder.asset(
-            path,
-            width: 200,
-            height: 200,
-            fit: BoxFit.fill,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text(
-              explanation,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 12,
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: Text(
-              explainSettings,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 12,
+              const Gap(20),
+              LottieBuilder.asset(
+                path,
+                width: 200,
+                height: 200,
+                fit: BoxFit.fill,
+                repeat: true,
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  explanation,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  explainSettings,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+              const Gap(40),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 10,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                  elevation: 4,
+                ),
+                onPressed: openAppSettings,
+                child: const Text('Abrir configuración'),
+              ),
+            ],
           ),
-          const Gap(40),
-          const ElevatedButton(
-            onPressed: openAppSettings,
-            child: Text('Abrir configuración'),
-          ),
-        ],
+        ),
       ),
     );
   }

@@ -91,7 +91,7 @@ class ExpandedBodyComponent extends HookConsumerWidget {
                             onTap: () {
                               context.showFullImage(
                                 images: images,
-                                index: index,
+                                index: indexImage,
                                 onDelete: (indexImage) {
                                   ref.read(formViewModelProvider.notifier).deleteImage(
                                         index,

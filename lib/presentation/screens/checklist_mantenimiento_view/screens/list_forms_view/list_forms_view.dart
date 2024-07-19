@@ -20,9 +20,9 @@ class ListFormsView extends HookConsumerWidget {
       () => ref.read(listFormsViewModelProvider.notifier).getForms([listOf, folio]),
     );
 
-    final (forms, isLoading, isSaving, isSaved) = ref.watch(
+    final (forms, isLoading) = ref.watch(
       listFormsViewModelProvider.select(
-        (value) => (value.data, value.isLoading, value.isSaving, value.isSaved),
+        (value) => (value.data, value.isLoading),
       ),
     );
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));

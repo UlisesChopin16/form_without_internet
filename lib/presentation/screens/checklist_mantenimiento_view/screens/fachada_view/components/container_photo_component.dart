@@ -95,14 +95,18 @@ class ContainerPhotoComponent extends ConsumerWidget {
   }
 
   Future<void> onTap(BuildContext context, WidgetRef ref, String image) async {
-    final path = await Navigator.of(context).push(
+    final isResume = ref.watch(fachadaViewModelProvider.select((value) => value.isResume));
+
+    if (isResume) {
+      return;
+    }
+    Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => CameraView(
-            photoType: PhotoType.fachadaSection, images: image.isNotEmpty ? [image] : []),
+          photoType: PhotoType.fachadaSection,
+          images: image.isNotEmpty ? [image] : [],
+        ),
       ),
     );
-    if (path != null) {
-      ref.read(fachadaViewModelProvider.notifier).setImagePath(path);
-    }
   }
 }

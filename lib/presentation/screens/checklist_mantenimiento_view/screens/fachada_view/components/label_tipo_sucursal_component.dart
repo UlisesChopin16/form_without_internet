@@ -10,10 +10,10 @@ class LabelTipoSucursalComponent extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
     final tipoSucursal =
-        ref.watch(fachadaViewModelProvider.select((value) => (value.tipoSucursal)));
+        ref.watch(fachadaViewModelProvider.select((value) => (value.recorrido?.tipo)));
     return LabelTextComponent(
       label: 'Tipo sucursal',
-      text: tipoSucursal,
+      text: tipoSucursal ?? '',
       fontSize: 14,
     );
   }

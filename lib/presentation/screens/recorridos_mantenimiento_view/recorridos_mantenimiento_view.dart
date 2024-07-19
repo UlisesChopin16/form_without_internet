@@ -21,15 +21,12 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
   //   color: Colors.black,
   // );
 
-
   static const List<Color> colors = [
     Colors.red,
     Colors.orange,
     Colors.green,
     Colors.black,
   ];
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +121,16 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                     rows: listRecorridos.map(
                       (recorrido) {
                         final index = listRecorridos.indexOf(recorrido);
-                        final cantidades = ref
+                        final {
+                          'recorridos': cantidadRecorridos,
+                          'cantidades': numeroCantidades,
+                        } = ref
                             .read(recorridosMantenimientoViewModelProvider.notifier)
                             .cantidades(recorrido.recorridoSucursalModels);
-                        final List<List<RecorridoSucursalModel>> cantidadRecorridos = cantidades['recorridos'];
-                        final List<int> numeroCantidades = cantidades['cantidades'];
+
+                        cantidadRecorridos as List<List<RecorridoSucursalModel>>;
+                        numeroCantidades as List<int>;
+                        
                         cantidadRecorridos.add(recorrido.recorridoSucursalModels);
                         final cells = [
                           recorrido.sem.toString(),
@@ -150,21 +152,16 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                             ),
                             DataCell(
                               Row(
-                                children: cantidadRecorridos
-                                    .map(
-                                      (recorridos) {
-                                        final index = cantidadRecorridos.indexOf(recorridos);
-                                        return Expanded(
-                                          child: CantidadesTextComponent(
-                                            onTap: () => onTap(recorridos, index, colors[index]),
-                                            text: numeroCantidades[index].toString(),
-                                            color: colors[index],
-                                          ),
-                                        );
-                                      }
-                                    )
-                                    .toList()
-                              ),
+                                  children: cantidadRecorridos.map((recorridos) {
+                                final index = cantidadRecorridos.indexOf(recorridos);
+                                return Expanded(
+                                  child: CantidadesTextComponent(
+                                    onTap: () => onTap(recorridos, index, colors[index]),
+                                    text: numeroCantidades[index].toString(),
+                                    color: colors[index],
+                                  ),
+                                );
+                              }).toList()),
                             ),
                             DataCell(
                               CenterTextComponent(

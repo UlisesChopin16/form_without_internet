@@ -40,7 +40,7 @@ class ButtonPopupDetalleSucursalComponent extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ChecklistMantenimientoView(
-              folio: recorrido.folio,
+              recorrido: recorrido,
               isResume: isCompleted,
             ),
           ),

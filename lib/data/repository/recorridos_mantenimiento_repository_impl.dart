@@ -41,6 +41,17 @@ class RecorridosMantenimientoRepositoryImpl implements RecorridosMantenimientoRe
       }
       return const ListFormsResponse().toDomain();
     }
+
+    // verify if we have data in the local storage
+    final String data = appPreferences.getSection(sectionP: section, folio: folio);
+    if (data.isNotEmpty) {
+      print('I have data');
+      final jsonData = json.decode(data);
+      final dataStorage = ListFormsResponse.fromJson(jsonData).toDomain();
+      await sendFormRep(body: dataStorage, folio: folio, section: section);
+      print('Data sent');
+    }
+
     final response = await recorridosMantenimientoDataSource.getListFormsDS();
     appPreferences.setSection(
       sectionP: section,
@@ -51,7 +62,10 @@ class RecorridosMantenimientoRepositoryImpl implements RecorridosMantenimientoRe
   }
 
   @override
-  Future<void> sendFormRep({required ListFormsResponseModel body, required String folio, required String section}) async {
+  Future<void> sendFormRep(
+      {required ListFormsResponseModel body,
+      required String folio,
+      required String section}) async {
     final bool isConnected = await networkInfo.isConnected;
     await appPreferences.setSection(folio: folio, sectionP: section, value: body.toEncoded());
     if (!isConnected) {

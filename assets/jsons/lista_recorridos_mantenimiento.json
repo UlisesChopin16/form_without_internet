@@ -67,7 +67,7 @@
                 },
                 {
                     "folio": "FOLIO-008",
-                    "nombre": "Sucursal 5",
+                    "nombre": "Esta es la sucursal con un nombre muy largo",
                     "tipo": "Tipo 5",
                     "region": "Region 5",
                     "checklist": "En curso"

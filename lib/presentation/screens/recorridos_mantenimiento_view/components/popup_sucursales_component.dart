@@ -22,12 +22,12 @@ class PopupSucursalesComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final (recorridos, isFiltering) = ref.watch(
+    final (recorridosFiltrados, isFiltering) = ref.watch(
       recorridosMantenimientoViewModelProvider.select(
         (value) => (value.recorridosFiltrados, value.isFiltered),
       ),
     );
-    double height = recorridos.length < 3 ? 250 : 400;
+    double height = recorridosFiltrados.length < 3 ? 250 : 400;
     return AlertDialog(
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,9 +70,9 @@ class PopupSucursalesComponent extends ConsumerWidget {
         width: 400,
         child: !isFiltering
             ? ListView.builder(
-                itemCount: recorridos.length,
+                itemCount: recorridosFiltrados.length,
                 itemBuilder: (context, index) {
-                  final recorrido = recorridos[index];
+                  final recorrido = recorridosFiltrados[index];
                   return InkWell(
                     onTap: () {
                       onTap(context, recorrido);

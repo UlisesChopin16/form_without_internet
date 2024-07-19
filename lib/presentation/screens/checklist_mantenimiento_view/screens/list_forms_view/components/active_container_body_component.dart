@@ -17,7 +17,7 @@ class ActiveContainerBodyComponent extends ConsumerWidget {
         (value) => (value.data[index].questionsResponseModel.length, value.data[index].active),
       ),
     );
-    final completedsAndNot =
+    final [completeds, notCompleteds] =
         ref.read(listFormsViewModelProvider.notifier).getCompletedsAndNot(index);
     return AnimatedOpacity(
       duration: const Duration(milliseconds: 300),
@@ -36,14 +36,14 @@ class ActiveContainerBodyComponent extends ConsumerWidget {
           // respuestas contestadas
           LabelTextComponent(
             label: 'Contestadas',
-            text: '${completedsAndNot[0]}',
+            text: '$completeds',
             fontSize: 14,
             colorText: Colors.green,
           ),
           // respuestas sin contestar
           LabelTextComponent(
             label: 'Sin contestar',
-            text: '${completedsAndNot[1]}',
+            text: '$notCompleteds',
             fontSize: 14,
             colorText: Colors.red,
           ),

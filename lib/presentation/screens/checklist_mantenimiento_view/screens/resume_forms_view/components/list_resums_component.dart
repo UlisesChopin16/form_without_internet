@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:form_without_internet/constants/icons_manager.dart';
 import 'package:form_without_internet/domain/models/list_forms_response_model/list_forms_response_model.dart';
+import 'package:form_without_internet/presentation/common/components/marker_card_component.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/components/text_inactive_section_component.dart';
+import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:form_without_internet/presentation/screens/image_full_view/image_full_view.dart';
 import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/components/label_content_component.dart';
 import 'package:gap/gap.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ListResumsComponent extends StatelessWidget {
+class ListResumsComponent extends HookConsumerWidget {
   const ListResumsComponent({
     super.key,
     required this.forms,
@@ -18,15 +23,20 @@ class ListResumsComponent extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final scrollController = useScrollController();
     return ListView.builder(
+      controller: scrollController,
       itemCount: forms.length,
+      physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.only(
         top: 10,
         bottom: 65,
       ),
       itemBuilder: (context, index) {
         final form = forms[index];
+        final [completeds, notCompleteds] =
+            ref.read(listFormsViewModelProvider.notifier).getCompletedsAndNot(index);
         return Card(
           color: Colors.grey[350],
           margin: const EdgeInsets.symmetric(
@@ -41,18 +51,71 @@ class ListResumsComponent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: LabelContentComponent(
-                    label: 'Nombre:',
-                    content: Text(
-                      form.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    LabelContentComponent(
+                      label: 'Nombre:',
+                      content: Text(
+                        form.title,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22,
+                        ),
                       ),
                     ),
-                  ),
+                    const Expanded(child: SizedBox()),
+                    LabelContentComponent(
+                      label: 'Pendientes:',
+                      content: Row(
+                        children: [
+                          const Icon(IconsManager.pendingAssigment, color: Colors.red),
+                          const Gap(5),
+                          Text(
+                            notCompleteds.toString(),
+                            style: style.copyWith(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Gap(20),
+                    LabelContentComponent(
+                      label: 'Completados:',
+                      content: Row(
+                        children: [
+                          const Icon(IconsManager.completedAssigment, color: Colors.green),
+                          const Gap(5),
+                          Text(
+                            completeds.toString(),
+                            style: style.copyWith(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Gap(20),
+                    LabelContentComponent(
+                      label: 'Totales:',
+                      content: Row(
+                        children: [
+                          const Icon(IconsManager.totalAssigments, color: Colors.black),
+                          const Gap(5),
+                          Text(
+                            form.questionsResponseModel.length.toString(),
+                            style: style.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 5),
                 const Divider(
@@ -63,19 +126,15 @@ class ListResumsComponent extends StatelessWidget {
                 if (form.active)
                   ...form.questionsResponseModel.map(
                     (question) {
+                      bool isNotAnswered = question.value.isEmpty;
                       bool isRed = question.value == 'Malo' || question.value == 'Pésimo';
-                      return Card(
-                        child: Container(
-                          padding: const EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              left: BorderSide(
-                                color: isRed ? Colors.red : Colors.black,
-                                width: 15,
-                              ),
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                      return MarkerCardComponent(
+                        color: isRed ? Colors.red : Colors.black,
+                        markerChild: isNotAnswered
+                            ? null
+                            : const Icon(IconsManager.circleCheck, color: Colors.white),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
                           child: Row(
                             // crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

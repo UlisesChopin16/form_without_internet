@@ -7,6 +7,7 @@ class IconsManager {
   static const IconData totalAssigments = Icons.assignment_outlined;
   static const IconData realizeAssigment = Icons.assignment_rounded;
   static const IconData resumeAssigment = Icons.assignment_turned_in;
+  static const IconData circleCheck = Icons.check_circle_outline;
 
   static const List<IconData> iconsStatusAssigment = [
     pendingAssigment,

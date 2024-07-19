@@ -65,7 +65,7 @@ class _PermissionCameraSectionState extends ConsumerState<PermissionCameraSectio
         explanation: widget.explanation,
         title: "Permiso necesario",
         explainSettings: 'Por favor, habilite el permiso de la cámara en la configuracion',
-        path: '',
+        path: 'assets/img/camera.json',
       );
     }
 

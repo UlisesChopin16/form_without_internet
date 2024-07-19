@@ -9,10 +9,10 @@ class LabelRegionComponent extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
-    final region = ref.watch(fachadaViewModelProvider.select((value) => (value.region)));
+    final region = ref.watch(fachadaViewModelProvider.select((value) => (value.recorrido?.region)));
     return LabelTextComponent(
       label: 'Región',
-      text: region,
+      text: region ?? '',
       fontSize: 14,
     );
   }
