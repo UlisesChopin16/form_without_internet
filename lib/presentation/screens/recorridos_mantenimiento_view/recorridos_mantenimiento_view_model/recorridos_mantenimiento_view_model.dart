@@ -46,12 +46,12 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
     return index % 2 == 0;
   }
 
-  Map<String, dynamic> cantidades(List<RecorridoSucursalModel> recorridosSucursal) {
-    final List<List<RecorridoSucursalModel>> recorridos = [];
+  ({List<List<RecorridoSucursalModel>> cantidadRecorridos, List<int> numeroCantidades}) cantidades(List<RecorridoSucursalModel> recorridosSucursal) {
+    final List<List<RecorridoSucursalModel>> recorridosS = [];
     final List<RecorridoSucursalModel> pendientesL = [];
     final List<RecorridoSucursalModel> enCursoL = [];
     final List<RecorridoSucursalModel> finalizadosL = [];
-    final List<int> cantidades = [];
+    final List<int> cantidadesS = [];
     int pendientes = 0;
     int enCurso = 0;
     int finalizados = 0;
@@ -70,19 +70,29 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
       }
     }
 
-    recorridos.add(pendientesL);
-    recorridos.add(enCursoL);
-    recorridos.add(finalizadosL);
+    recorridosS.add(pendientesL);
+    recorridosS.add(enCursoL);
+    recorridosS.add(finalizadosL);
 
-    cantidades.add(pendientes);
-    cantidades.add(enCurso);
-    cantidades.add(finalizados);
-    cantidades.add(totales);
+    cantidadesS.add(pendientes);
+    cantidadesS.add(enCurso);
+    cantidadesS.add(finalizados);
+    cantidadesS.add(totales);
 
-    return {
-      'recorridos': recorridos,
-      'cantidades': cantidades,
-    };
+    return (
+      cantidadRecorridos: recorridosS,
+      numeroCantidades: cantidadesS,
+    );
+  }
+
+  List<RecorridoSucursalModel> getAllSucursales() {
+    final List<RecorridoSucursalModel> listRecorridos = [];
+    final data = state.data;
+
+    for (var recorrido in data) {
+      listRecorridos.addAll(recorrido.recorridoSucursalModels);
+    }
+    return listRecorridos;
   }
 
   getListFiltered(List<RecorridoSucursalModel> recorridos) {
@@ -122,7 +132,10 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
       // filtramos los recorridos por folio y nombre
       final recorridosFiltrados = recorridos.where((recorrido) {
         return recorrido.folio.toLowerCase().contains(filter.toLowerCase()) ||
-            recorrido.nombre.toLowerCase().contains(filter.toLowerCase());
+            recorrido.nombre.toLowerCase().contains(filter.toLowerCase()) ||
+            recorrido.checklist.value.toLowerCase().contains(filter.toLowerCase()) ||
+            recorrido.region.toLowerCase().contains(filter.toLowerCase()) ||
+            recorrido.tipo.toLowerCase().contains(filter.toLowerCase());
       }).toList();
 
       // actualizamos la lista de recorridos filtrados

@@ -27,34 +27,35 @@ class ListFormsView extends HookConsumerWidget {
     );
     // final (variable) = ref.watch(provider.select((value) => (value.variable)));
     return Scaffold(
-        body: !isLoading
-            ? Padding(
-                padding: const EdgeInsets.only(
-                  right: 10.0,
-                  left: 10.0,
-                  top: 10.0,
-                  bottom: 25,
-                ),
-                child: forms.isNotEmpty
-                    ? GridView.builder(
-                        padding: const EdgeInsets.only(bottom: 60.0),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: (orientation == Orientation.portrait) ? 4 : 5,
-                          mainAxisSpacing: 5.0,
-                        ),
-                        itemCount: forms.length,
-                        itemBuilder: (context, index) {
-                          return ActiveContainerComponent(
-                            index: index,
-                          );
-                        },
-                      )
-                    : Center(
-                        child: Text('No hay $section disponibles'),
+      body: !isLoading
+          ? Padding(
+              padding: const EdgeInsets.only(
+                right: 10.0,
+                left: 10.0,
+                top: 10.0,
+                bottom: 25,
+              ),
+              child: forms.isNotEmpty
+                  ? GridView.builder(
+                      padding: const EdgeInsets.only(bottom: 60.0),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: (orientation == Orientation.portrait) ? 4 : 5,
+                        mainAxisSpacing: 5.0,
                       ),
-              )
-            : const Center(
-                child: CircularProgressIndicator(),
-              ));
+                      itemCount: forms.length,
+                      itemBuilder: (context, index) {
+                        return ActiveContainerComponent(
+                          index: index,
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text('No hay $section disponibles'),
+                    ),
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
+            ),
+    );
   }
 }

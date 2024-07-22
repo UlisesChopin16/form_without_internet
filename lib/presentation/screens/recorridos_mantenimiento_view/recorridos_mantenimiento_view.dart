@@ -4,6 +4,7 @@ import 'package:form_without_internet/domain/models/recorridos_mantenimiento_res
 import 'package:form_without_internet/presentation/common/components/center_text_component.dart';
 import 'package:form_without_internet/presentation/hooks/use_launch_effect.dart';
 import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/recorridos_mantenimiento_view_model/recorridos_mantenimiento_view_model.dart';
+import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'components/components.dart';
@@ -45,7 +46,21 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Recorridos de mantenimiento'),
+        actions: [
+          // botón de filtro
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            iconSize: 35,
+            onPressed: () {
+              final recorridos =
+                  ref.read(recorridosMantenimientoViewModelProvider.notifier).getAllSucursales();
+              onTap(recorridos, 3, colors[3]);
+            },
+          ),
+          const Gap(10),
+        ],
       ),
       body: isLoading
           ? const Center(
@@ -70,8 +85,7 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                           (columnName) => (columnName == 'Recorrido sucursales')
                               ? DataColumn(
                                   label: Expanded(
-                                    child: Align(
-                                      alignment: Alignment.center,
+                                    child: Center(
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
@@ -110,9 +124,8 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                                 )
                               : DataColumn(
                                   label: Expanded(
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(columnName),
+                                    child: CenterTextComponent(
+                                      text: columnName,
                                     ),
                                   ),
                                 ),
@@ -121,16 +134,13 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                     rows: listRecorridos.map(
                       (recorrido) {
                         final index = listRecorridos.indexOf(recorrido);
-                        final {
-                          'recorridos': cantidadRecorridos,
-                          'cantidades': numeroCantidades,
-                        } = ref
+                        final (
+                          :numeroCantidades,
+                          :cantidadRecorridos,
+                        ) = ref
                             .read(recorridosMantenimientoViewModelProvider.notifier)
                             .cantidades(recorrido.recorridoSucursalModels);
 
-                        cantidadRecorridos as List<List<RecorridoSucursalModel>>;
-                        numeroCantidades as List<int>;
-                        
                         cantidadRecorridos.add(recorrido.recorridoSucursalModels);
                         final cells = [
                           recorrido.sem.toString(),
@@ -167,7 +177,9 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                               CenterTextComponent(
                                 text: recorrido.status.value,
                                 style: TextStyle(
-                                    color: recorrido.status.color, fontWeight: FontWeight.bold),
+                                  color: recorrido.status.color,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             // DataCell(Text(recorrido.fechaRegistro)),
@@ -213,43 +225,5 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
     );
 
     ref.read(recorridosMantenimientoViewModelProvider.notifier).cleanListFiltered();
-  }
-}
-
-class CantidadesTextComponent extends StatelessWidget {
-  final String text;
-  final Color color;
-  final void Function() onTap;
-  const CantidadesTextComponent({
-    super.key,
-    required this.text,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          backgroundColor: color,
-          elevation: 3,
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        ),
-        child: CenterTextComponent(
-          text: text,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-      ),
-    );
   }
 }

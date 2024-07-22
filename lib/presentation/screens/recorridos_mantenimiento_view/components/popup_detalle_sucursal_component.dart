@@ -7,9 +7,11 @@ import 'package:gap/gap.dart';
 
 class PopupDetalleSucursalComponent extends StatelessWidget {
   final RecorridoSucursalModel recorrido;
+  final bool disapearButton;
   const PopupDetalleSucursalComponent({
     super.key,
     required this.recorrido,
+    this.disapearButton = false,
   });
 
   static const style = TextStyle(fontSize: 18);
@@ -85,85 +87,79 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
           ],
         ),
       ),
-      content: SizedBox(
-        height: 280,
-        width: 300,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              LabelContentComponent(
-                                label: 'Tipo:',
-                                content: Text(
-                                  recorrido.tipo,
-                                  style: style,
-                                ),
-                              ),
-                              const Gap(10),
-                              LabelContentComponent(
-                                label: 'Región:',
-                                content: Text(
-                                  recorrido.region,
-                                  style: style,
-                                ),
-                              ),
-                              // fecha visita
-                              const Gap(10),
-                              const LabelContentComponent(
-                                label: 'Fecha de visita:',
-                                content: Text(
-                                  'Aún no se realiza la visita',
-                                  style: style,
-                                ),
-                              ),
-                            ],
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          LabelContentComponent(
+                            label: 'Tipo:',
+                            content: Text(
+                              recorrido.tipo,
+                              style: style,
+                            ),
                           ),
-                        ),
-                        const Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // fecha programada
-                              LabelContentComponent(
-                                label: 'Fecha programada:',
-                                content: Text(
-                                  'sem.28\ndel 08/Jul/2024\nal 14/Jul/2024',
-                                  style: style,
-                                ),
-                              ),
-                            ],
+                          const Gap(10),
+                          LabelContentComponent(
+                            label: 'Región:',
+                            content: Text(
+                              recorrido.region,
+                              style: style,
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                    const Gap(10),
-                    const LabelContentComponent(
-                      label: 'Dirección:',
-                      content: Text(
-                        'Constituyentes no. 13 col. Centro, Santiago de Queretaro. CP. 76057',
-                        style: style,
+                          // fecha visita
+                          const Gap(10),
+                          const LabelContentComponent(
+                            label: 'Fecha de visita:',
+                            content: Text(
+                              'Aún no se realiza la visita',
+                              style: style,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+                    const Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // fecha programada
+                          LabelContentComponent(
+                            label: 'Fecha programada:',
+                            content: Text(
+                              'sem.28 del 08/Jul/2024 al\n14/Jul/2024',
+                              style: style,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
-              ),
+                const Gap(10),
+                const LabelContentComponent(
+                  label: 'Dirección:',
+                  content: Text(
+                    'Constituyentes no. 13 col. Centro, Santiago de Queretaro. CP. 76057',
+                    style: style,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       actions: [
         Row(
@@ -171,7 +167,7 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
           children: [
             const CloseButtonComponent(),
             const Gap(10),
-            ButtonPopupDetalleSucursalComponent(recorrido: recorrido),
+            if (!disapearButton) ButtonPopupDetalleSucursalComponent(recorrido: recorrido),
           ],
         ),
       ],

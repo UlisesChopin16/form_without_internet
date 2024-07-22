@@ -3,6 +3,8 @@ class StringsManager {
   static const realizarCheckList = 'Realizar checklist de mantenimiento';
   static const continuarCheckList = 'Continuar checklist de mantenimiento';
   static const verResumenCheckList = 'Ver resumen del checklist';
+  static const expandir = 'Expandir todos';
+  static const contraer = 'Contraer todos';
 
   static const List<String> columnNames = [
     'sem',

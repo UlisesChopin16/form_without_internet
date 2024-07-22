@@ -3,7 +3,7 @@ import 'package:form_without_internet/domain/models/recorridos_mantenimiento_res
 
 abstract class RecorridosMantenimientoRepository {
   Future<RecorridosMantenimientoResponseModel> getRecorridosMantenimientoRep();
-  Future<ListFormsResponseModel> getListFormsRep(String section, String folio);
+  Future<ListFormsResponseModel> getListFormsRep(String section, String folio, {bool isResume = false});
   Future<void> sendFormRep(
       {required ListFormsResponseModel body, required String section, required String folio});
 }

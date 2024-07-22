@@ -39,7 +39,7 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
   }
 
   @override
-  void getForms(List<String> contain) async {
+  Future<void> getForms(List<String> contain) async {
     state = state.copyWith(
       isLoading: true,
       listOf: contain[0],
@@ -63,7 +63,7 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
   }
 
   @override
-  void sendForms() async {
+  Future<void> sendForms() async {
     final data = state.toSent();
     await _useCase.sendForm(
       body: data,
@@ -147,8 +147,8 @@ class ListFormsViewModel extends _$ListFormsViewModel implements ListFormsInput 
 }
 
 abstract class ListFormsInput {
-  void sendForms();
-  void getForms(List<String> data);
+  Future<void> sendForms();
+  Future<void> getForms(List<String> data);
   void changeState(bool value, int index);
   void getQuestions(List<QuestionsResponseModel> questions, int index);
   List<int> getCompletedsAndNot(int index);

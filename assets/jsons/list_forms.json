@@ -84,6 +84,13 @@
         },
         {
           "id": "12",
+          "name": "Contactos eléctricos y de gases locotes",
+          "value": "",
+          "description": "",
+          "images": []
+        },
+        {
+          "id": "13",
           "name": "Otros",
           "value": "",
           "description": "",

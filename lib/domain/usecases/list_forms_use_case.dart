@@ -13,8 +13,13 @@ class ListFormsUseCase implements BaseUseCase<List<String>, ListFormsResponseMod
     final section = data[0];
     final folio = data[1];
 
+    bool isResume = false;
+    if (data.length > 2) {
+      isResume = data[2] == 'true';
+    }
+
     // then we call the repository to login the customer
-    final response = await repository.getListFormsRep(section, folio);
+    final response = await repository.getListFormsRep(section, folio, isResume: isResume);
 
     return response;
   }

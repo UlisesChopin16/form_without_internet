@@ -10,6 +10,8 @@ import 'package:form_without_internet/presentation/screens/checklist_mantenimien
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/resume_forms_view/resume_forms_view.dart';
+import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/components/popup_detalle_sucursal_component.dart';
+import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart';
 import 'package:gap/gap.dart';
 
 class ChecklistMantenimientoView extends ConsumerWidget {
@@ -60,14 +62,34 @@ class ChecklistMantenimientoView extends ConsumerWidget {
               isSaved: isSaved,
             ),
             const Gap(10),
-            Text(
-              recorrido.folio,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                decoration: TextDecoration.underline,
-                decorationColor: Colors.blue,
-                color: Colors.blue,
+            TextButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      if (recorrido.checklist == StatusRecorridoSucursalType.pendiente) {
+                        return PopupDetalleSucursalComponent(
+                          recorrido: recorrido.copyWith(
+                            checklist: StatusRecorridoSucursalType.enCurso,
+                          ),
+                          disapearButton: true,
+                        );
+                      }
+                      return PopupDetalleSucursalComponent(
+                        recorrido: recorrido,
+                        disapearButton: true,
+                      );
+                    });
+              },
+              child: Text(
+                recorrido.folio,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.underline,
+                  decorationColor: Colors.blue,
+                  color: Colors.blue,
+                ),
               ),
             ),
             const Gap(10),
@@ -126,7 +148,7 @@ class ChecklistMantenimientoView extends ConsumerWidget {
                       ),
                     ),
                   );
-                  
+
                   if (currentTab == 0) {
                     ref.read(fachadaViewModelProvider.notifier).setIsResume();
                     return;
@@ -135,6 +157,7 @@ class ChecklistMantenimientoView extends ConsumerWidget {
                   ref.read(listFormsViewModelProvider.notifier).getForms([
                     StringsManager.dataSection[currentTab - 1][0],
                     recorrido.folio,
+                    isResume.toString(),
                   ]);
                 },
                 child: const Icon(IconsManager.realizeAssigment),

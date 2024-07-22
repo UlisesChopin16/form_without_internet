@@ -8,6 +8,8 @@ class IconsManager {
   static const IconData realizeAssigment = Icons.assignment_rounded;
   static const IconData resumeAssigment = Icons.assignment_turned_in;
   static const IconData circleCheck = Icons.check_circle_outline;
+  static const IconData expandIcon = Icons.keyboard_arrow_down_rounded;
+  static const IconData compressIcon = Icons.keyboard_arrow_up_rounded;
 
   static const List<IconData> iconsStatusAssigment = [
     pendingAssigment,

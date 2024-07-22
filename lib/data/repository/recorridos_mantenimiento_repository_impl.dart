@@ -28,7 +28,7 @@ class RecorridosMantenimientoRepositoryImpl implements RecorridosMantenimientoRe
   }
 
   @override
-  Future<ListFormsResponseModel> getListFormsRep(String section, String folio) async {
+  Future<ListFormsResponseModel> getListFormsRep(String section, String folio, {bool isResume = false}) async {
     // final response = await recorridosMantenimientoDataSource.getListFormsDS();
     // return response.toDomain();
 
@@ -44,7 +44,7 @@ class RecorridosMantenimientoRepositoryImpl implements RecorridosMantenimientoRe
 
     // verify if we have data in the local storage
     final String data = appPreferences.getSection(sectionP: section, folio: folio);
-    if (data.isNotEmpty) {
+    if (data.isNotEmpty && !isResume) {
       print('I have data');
       final jsonData = json.decode(data);
       final dataStorage = ListFormsResponse.fromJson(jsonData).toDomain();
