@@ -92,10 +92,8 @@ class _PageViewComponentState extends ConsumerState<PageViewComponent> {
 
   void _onNextButtonPressed() {
     if (_pageController.page == ref.read(imageFullViewModelProvider).images.length - 1) {
-      _pageController.animateToPage(
+      _pageController.jumpToPage(
         0,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
       );
       return;
     }
@@ -107,10 +105,8 @@ class _PageViewComponentState extends ConsumerState<PageViewComponent> {
 
   void _onPreviousButtonPressed() {
     if (_pageController.page == 0) {
-      _pageController.animateToPage(
+      _pageController.jumpToPage(
         ref.read(imageFullViewModelProvider).images.length - 1,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
       );
       return;
     }

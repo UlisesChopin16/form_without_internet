@@ -112,7 +112,11 @@ class FachadaViewLandScape extends ConsumerWidget {
                 padding: const EdgeInsets.all(15.0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.grey,
+                    image: const DecorationImage(
+                      image: AssetImage('assets/img/map_landscape.png'),
+                      fit: BoxFit.cover,
+                    ),
                     borderRadius: BorderRadius.circular(15),
                   ),
                 ),
@@ -182,7 +186,11 @@ class FachadaViewPortrait extends ConsumerWidget {
             ),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.grey,
+                image: const DecorationImage(
+                  image: AssetImage('assets/img/map_portrait.png'),
+                  fit: BoxFit.cover,
+                ),
                 borderRadius: BorderRadius.circular(15),
               ),
             ),

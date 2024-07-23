@@ -45,7 +45,9 @@ class ListResumsComponent extends HookConsumerWidget {
               vertical: 10,
             ),
             child: InkWell(
-              onTap: () => ref.read(resumeFormsViewModelProvider.notifier).changeExpanded(index),
+              onTap: form.active
+                  ? () => ref.read(resumeFormsViewModelProvider.notifier).changeExpanded(index)
+                  : null,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

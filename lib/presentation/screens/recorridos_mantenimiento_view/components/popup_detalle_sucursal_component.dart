@@ -93,6 +93,7 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25.0),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Row(
@@ -149,11 +150,14 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
                   ],
                 ),
                 const Gap(10),
-                const LabelContentComponent(
-                  label: 'Dirección:',
-                  content: Text(
-                    'Constituyentes no. 13 col. Centro, Santiago de Queretaro. CP. 76057',
-                    style: style,
+                const SizedBox(
+                  width: 500,
+                  child: LabelContentComponent(
+                    label: 'Dirección:',
+                    content: Text(
+                      'Constituyentes no. 13 col. Centro, Santiago de Queretaro. CP. 76057',
+                      style: style,
+                    ),
                   ),
                 ),
               ],

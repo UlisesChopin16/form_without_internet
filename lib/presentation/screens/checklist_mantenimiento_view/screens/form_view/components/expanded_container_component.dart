@@ -24,8 +24,8 @@ class ExpandedContainerComponent extends ConsumerWidget {
       margin: const EdgeInsets.all(10),
       shape: RoundedRectangleBorder(
         side: !isExpanded && value != 'No aplica'
-            ? const BorderSide(
-                color: Colors.red,
+            ? BorderSide(
+                color: Theme.of(context).primaryColor,
                 width: 3,
               )
             : BorderSide.none,

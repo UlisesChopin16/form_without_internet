@@ -48,7 +48,7 @@ class ChecklistMantenimientoView extends ConsumerWidget {
           // title: const Text('Fachada de la sucursal: CONSTITUYENTES'),
           title: Text(
             isResume
-                ? 'Resume of: ${recorrido.nombre.toUpperCase()}'
+                ? 'Resumen de:   ${recorrido.nombre.toUpperCase()}'
                 : recorrido.nombre.toUpperCase(),
             maxLines: 1,
             style: const TextStyle(
