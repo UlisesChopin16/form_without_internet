@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/form_view/form_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/components/text_inactive_section_component.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'components.dart';
@@ -58,16 +59,13 @@ class ActiveContainerComponent extends ConsumerWidget {
         (value) => (value.data[index], value.listOf, value.folio),
       ),
     );
-    final data = await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) {
-          return FormView(
-            formIndex: index,
-            questions: form.questionsResponseModel,
-            title: form.title,
-          );
-        },
-      ),
+    final bool? data = await context.push(
+      FormView.route,
+      extra: {
+        'formIndex': index,
+        'questions': form.questionsResponseModel,
+        'title': form.title,
+      },
     );
 
     ref.read(listFormsViewModelProvider.notifier).getForms([listof, folio]);

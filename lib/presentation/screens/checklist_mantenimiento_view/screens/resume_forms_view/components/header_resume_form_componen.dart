@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:form_without_internet/constants/icons_manager.dart';
 import 'package:form_without_internet/domain/models/list_forms_response_model/list_forms_response_model.dart';
+import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view_model/checklist_mantenimiento_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/resume_forms_view/resume_forms_view_model/resume_forms_view_model.dart';
 import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/components/components.dart';
+import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -22,6 +24,8 @@ class HeaderResumeFormComponen extends ConsumerWidget {
         ref.read(listFormsViewModelProvider.notifier).getCompletedsAndNot(index);
     final isExpanded =
         ref.watch(resumeFormsViewModelProvider.select((value) => value.listExpandeds[index]));
+    final checkList = ref.watch(checklistMantenimientoViewModelProvider.select((value) => value.recorrido!.checklist));
+    final bool isCompleted = checkList == StatusRecorridoSucursalType.completado;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +41,7 @@ class HeaderResumeFormComponen extends ConsumerWidget {
           ),
         ),
         const Expanded(child: SizedBox()),
-        if (form.active)
+        if (form.active && !isCompleted)
           LabelContentComponent(
             label: 'Pendientes:',
             content: Row(
@@ -55,7 +59,7 @@ class HeaderResumeFormComponen extends ConsumerWidget {
             ),
           ),
         if (form.active) const Gap(20),
-        if (form.active)
+        if (form.active && !isCompleted)
           LabelContentComponent(
             label: 'Completados:',
             content: Row(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class CloseButtonComponent extends StatelessWidget {
   final void Function()? onPressed;
@@ -23,7 +24,7 @@ class CloseButtonComponent extends StatelessWidget {
       ),
       onPressed: () {
         onPressed?.call();
-        Navigator.of(context).pop(true);
+        context.pop(true);
       },
       child: const Row(
         mainAxisSize: MainAxisSize.min,

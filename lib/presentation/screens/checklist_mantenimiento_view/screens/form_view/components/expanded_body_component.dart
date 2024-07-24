@@ -4,6 +4,7 @@ import 'package:form_without_internet/app/extensions.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/form_view/form_view_model/form_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'components.dart';
@@ -101,7 +102,7 @@ class ExpandedBodyComponent extends HookConsumerWidget {
                                             .getQuestions(questions, formIndex),
                                       );
                                   if (images.length == 1) {
-                                    Navigator.of(context).pop();
+                                    context.pop();
                                   }
                                 },
                               );

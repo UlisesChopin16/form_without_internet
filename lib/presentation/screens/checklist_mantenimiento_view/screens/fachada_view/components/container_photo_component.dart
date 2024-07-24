@@ -7,6 +7,7 @@ import 'package:form_without_internet/presentation/screens/camera_view/camera_vi
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
 import 'package:form_without_internet/types/photo_type.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class ContainerPhotoComponent extends ConsumerWidget {
   const ContainerPhotoComponent({super.key});
@@ -89,7 +90,7 @@ class ContainerPhotoComponent extends ConsumerWidget {
       image: image,
       onDelete: (indexImage) {
         ref.read(fachadaViewModelProvider.notifier).setImagePath('');
-        Navigator.of(context).pop();
+        context.pop();
       },
     );
   }
@@ -100,13 +101,12 @@ class ContainerPhotoComponent extends ConsumerWidget {
     if (isResume) {
       return;
     }
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => CameraView(
-          photoType: PhotoType.fachadaSection,
-          images: image.isNotEmpty ? [image] : [],
-        ),
-      ),
+    context.push(
+      CameraView.route,
+      extra: {
+        'photoType': PhotoType.fachadaSection,
+        'images': image.isNotEmpty ? [image] : [],
+      },
     );
   }
 }

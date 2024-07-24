@@ -8,6 +8,10 @@ class CameraView extends ConsumerWidget {
   final PhotoType photoType;
   final int index;
   final List<String> images;
+
+  static const String route = '/camera';
+  static const String name = 'Camara';
+
   const CameraView({
     super.key,
     required this.photoType,

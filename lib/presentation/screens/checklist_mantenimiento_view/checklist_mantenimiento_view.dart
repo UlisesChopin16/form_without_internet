@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_without_internet/constants/icons_manager.dart';
 import 'package:form_without_internet/constants/strings_manager.dart';
 import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model/recorridos_mantenimiento_response_model.dart';
 import 'package:form_without_internet/presentation/common/components/saving_data_component.dart';
+import 'package:form_without_internet/presentation/hooks/use_launch_effect.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view_model/checklist_mantenimiento_view_model.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view.dart';
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/fachada_view/fachada_view_model/fachada_view_model.dart';
@@ -13,11 +13,18 @@ import 'package:form_without_internet/presentation/screens/checklist_mantenimien
 import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/components/popup_detalle_sucursal_component.dart';
 import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ChecklistMantenimientoView extends ConsumerWidget {
+class ChecklistMantenimientoView extends HookConsumerWidget {
   final RecorridoSucursalModel recorrido;
   final bool isResume;
   final int index;
+
+  static const String route = '/checklist-mantenimiento';
+  static const String resumeRoute = '/resume_checklist';
+  static const String name = 'Checklist_de_mantenimiento';
+  static const String resumeName = 'Resumen_del_checklist';
 
   const ChecklistMantenimientoView({
     super.key,
@@ -29,6 +36,12 @@ class ChecklistMantenimientoView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final viewInsets = MediaQuery.of(context).viewInsets;
+    useLaunchEffect(
+      () => ref.read(checklistMantenimientoViewModelProvider.notifier).setData(
+            recorrido,
+            isResume,
+          ),
+    );
     final (isSaving, isSaved) = ref.watch(
       fachadaViewModelProvider.select(
         (value) => (value.isSaving, value.isSaved),
@@ -39,6 +52,8 @@ class ChecklistMantenimientoView extends ConsumerWidget {
         (value) => (value.tabs, value.currentTabIndex),
       ),
     );
+
+    bool isCompleted = recorrido.checklist == StatusRecorridoSucursalType.completado;
     return DefaultTabController(
       initialIndex: index,
       length: tabs.length,
@@ -139,14 +154,12 @@ class ChecklistMantenimientoView extends ConsumerWidget {
               FloatingActionButton(
                 heroTag: null,
                 onPressed: () async {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => ChecklistMantenimientoView(
-                        recorrido: recorrido,
-                        isResume: true,
-                        index: currentTab,
-                      ),
-                    ),
+                  await context.push(
+                    ChecklistMantenimientoView.resumeRoute,
+                    extra: {
+                      'recorrido': recorrido,
+                      'index': currentTab,
+                    },
                   );
 
                   if (currentTab == 0) {
@@ -163,11 +176,12 @@ class ChecklistMantenimientoView extends ConsumerWidget {
                 child: const Icon(IconsManager.realizeAssigment),
               ),
             if (!isResume) const Gap(10),
-            FloatingActionButton(
-              heroTag: null,
-              onPressed: () {},
-              child: const Icon(Icons.check),
-            ),
+            if (!isCompleted)
+              FloatingActionButton(
+                heroTag: null,
+                onPressed: () {},
+                child: const Icon(Icons.check),
+              ),
           ],
         ),
       ),

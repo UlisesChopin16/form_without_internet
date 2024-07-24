@@ -40,7 +40,8 @@ extension ShowFullImage on BuildContext {
     String image = '',
     List<String> images = const [],
     int index = 0,
-    required void Function(int) onDelete,
+    void Function(int)? onDelete,
+    bool isDelete = true,
   }) async {
     Navigator.of(this).push(
       MaterialPageRoute(
@@ -48,6 +49,7 @@ extension ShowFullImage on BuildContext {
           image: image,
           images: images,
           index: index,
+          isDelete: isDelete,
           onDelete: onDelete,
         ),
       ),

@@ -10,6 +10,7 @@ import 'package:form_without_internet/presentation/screens/checklist_mantenimien
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/screens/list_forms_view/list_forms_view_model/list_forms_view_model.dart';
 import 'package:form_without_internet/types/photo_type.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CameraBody extends ConsumerStatefulWidget {
@@ -106,7 +107,7 @@ class _CameraViewState extends ConsumerState<CameraBody> {
                               image: imagesr[index],
                               onDelete: (indexImage) {
                                 onDelete(index);
-                                Navigator.of(context).pop();
+                                context.pop();
                               },
                             );
                             return;

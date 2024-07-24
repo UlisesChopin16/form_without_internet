@@ -11,8 +11,16 @@ class FormView extends HookConsumerWidget {
   final int formIndex;
   final String title;
   final List<QuestionsResponseModel> questions;
-  const FormView(
-      {super.key, required this.questions, required this.title, required this.formIndex});
+
+  static const String route = '/checklist-mantenimiento/form';
+  static const String name = 'Formulario';
+
+  const FormView({
+    super.key,
+    required this.questions,
+    required this.title,
+    required this.formIndex,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

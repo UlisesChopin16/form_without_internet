@@ -12,6 +12,9 @@ import 'components/components.dart';
 class RecorridosMantenimientoView extends StatefulHookConsumerWidget {
   const RecorridosMantenimientoView({super.key});
 
+  static const route = '/recorridos-mantenimiento';
+  static const name = 'Recorridos_de_mantenimiento';
+
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _RecorridosMantenimientoViewState();
 }

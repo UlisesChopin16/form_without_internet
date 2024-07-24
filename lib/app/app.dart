@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/recorridos_mantenimiento_view.dart';
+import 'package:form_without_internet/presentation/routes/app_routes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -28,14 +29,17 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'My App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const RecorridosMantenimientoView(),
-
+      routerConfig: GoRouter(
+        debugLogDiagnostics: true,
+        initialLocation: AppRoutes.home,
+        routes: AppRoutes.routes,
+      ),
       // home: const CameraView(photoType: PhotoType.fachadaSection),
     );
   }

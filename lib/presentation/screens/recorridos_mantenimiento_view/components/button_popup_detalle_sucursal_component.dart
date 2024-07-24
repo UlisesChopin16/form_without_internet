@@ -5,6 +5,7 @@ import 'package:form_without_internet/domain/models/recorridos_mantenimiento_res
 import 'package:form_without_internet/presentation/screens/checklist_mantenimiento_view/checklist_mantenimiento_view.dart';
 import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 class ButtonPopupDetalleSucursalComponent extends StatelessWidget {
   const ButtonPopupDetalleSucursalComponent({
@@ -37,13 +38,19 @@ class ButtonPopupDetalleSucursalComponent extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
       ),
       onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ChecklistMantenimientoView(
-              recorrido: recorrido,
-              isResume: isCompleted,
-            ),
-          ),
+        Map<String, RecorridoSucursalModel> extra = {
+          'recorrido': recorrido,
+        };
+        if (isCompleted) {
+          context.push(
+            ChecklistMantenimientoView.resumeRoute,
+            extra: extra,
+          );
+          return;
+        }
+        context.push(
+          ChecklistMantenimientoView.route,
+          extra: extra,
         );
       },
       child: Row(
