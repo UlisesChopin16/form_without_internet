@@ -41,6 +41,7 @@ extension ShowFullImage on BuildContext {
     List<String> images = const [],
     int index = 0,
     void Function(int)? onDelete,
+    /// if isDelete is true, the image can be deleted and is necessary to pass the onDelete function 
     bool isDelete = true,
   }) async {
     Navigator.of(this).push(

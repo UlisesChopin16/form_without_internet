@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model/recorridos_mantenimiento_response_model.dart';
 import 'package:form_without_internet/presentation/common/components/close_button_component.dart';
-import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/components/button_popup_detalle_sucursal_component.dart';
 import 'package:form_without_internet/presentation/screens/recorridos_mantenimiento_view/components/label_content_component.dart';
 import 'package:gap/gap.dart';
+
+import 'pop_up_detalles_sucursal_components/pop_up_detalles_sucursal_components.dart';
 
 class PopupDetalleSucursalComponent extends StatelessWidget {
   final RecorridoSucursalModel recorrido;
@@ -128,37 +129,41 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
                               style: style,
                             ),
                           ),
+                          const Gap(10),
+                          const LabelContentComponent(
+                            label: 'Dirección:',
+                            content: Text(
+                              'Constituyentes no. 13 col. Centro, Santiago de Queretaro. CP. 76057',
+                              style: style,
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    const Expanded(
+                    const Gap(20),
+                    Expanded(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // fecha programada
-                          LabelContentComponent(
+                          const LabelContentComponent(
                             label: 'Fecha programada:',
                             content: Text(
                               'sem.28 del 08/Jul/2024 al\n14/Jul/2024',
                               style: style,
                             ),
                           ),
+                          const Gap(15),
+                          // fecha de inicio
+                          ButtonPlanoComponent(
+                            statusRecorrido: recorrido.checklist,
+                            folio: recorrido.folio,
+                          ),
                         ],
                       ),
                     )
                   ],
-                ),
-                const Gap(10),
-                const SizedBox(
-                  width: 500,
-                  child: LabelContentComponent(
-                    label: 'Dirección:',
-                    content: Text(
-                      'Constituyentes no. 13 col. Centro, Santiago de Queretaro. CP. 76057',
-                      style: style,
-                    ),
-                  ),
                 ),
               ],
             ),
@@ -171,7 +176,7 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
           children: [
             const CloseButtonComponent(),
             const Gap(10),
-            if (!disapearButton) ButtonPopupDetalleSucursalComponent(recorrido: recorrido),
+            if (!disapearButton) ButtonChecklistComponent(recorrido: recorrido),
           ],
         ),
       ],

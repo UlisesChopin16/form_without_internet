@@ -1,7 +1,9 @@
 import 'package:form_without_internet/app/app_preferences.dart';
 import 'package:form_without_internet/data/data_source/recorridos_mantenimiento/recorridos_mantenimiento_data_source.dart';
 import 'package:form_without_internet/data/data_source/recorridos_mantenimiento/recorridos_mantenimiento_data_source_impl.dart';
+import 'package:form_without_internet/data/network/apis/plano_sucursal_api.dart';
 import 'package:form_without_internet/data/network/apis/recorridos_mantenimiento_api.dart';
+import 'package:form_without_internet/data/network/dio/dio_factory.dart';
 import 'package:form_without_internet/data/network_info/network_info.dart';
 import 'package:form_without_internet/data/repository/recorridos_mantenimiento_repository.dart';
 import 'package:form_without_internet/data/repository/recorridos_mantenimiento_repository_impl.dart';
@@ -31,12 +33,16 @@ Future<void> initAppModule() async {
   );
 
   // dio factory
-  // instance.registerLazySingleton<DioFactory>(
-  //   () => DioFactory(instance()),
-  // );
+  instance.registerLazySingleton<DioFactory>(
+    () => DioFactory(instance()),
+  );
 
   // App service client
-  // final dio = await instance<DioFactory>().getDio();
+  final dio = await instance<DioFactory>().getDio();
+  instance.registerLazySingleton<PlanoSucursalApi>(
+    () => PlanoSucursalApi(dio),
+  );
+
   instance.registerLazySingleton<RecorridosMantenimientoApi>(
     () => RecorridosMantenimientoApi(),
   );
@@ -45,6 +51,7 @@ Future<void> initAppModule() async {
   instance.registerLazySingleton<RecorridosMantenimientoDataSource>(
     () => RecorridosMantenimientoDataSourceImpl(
       recorridosMantenimientoApi: instance(),
+      planoSucursalApi: instance(),
     ),
   );
 

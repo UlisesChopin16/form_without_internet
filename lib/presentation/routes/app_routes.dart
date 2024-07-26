@@ -12,6 +12,12 @@ class AppRoutes {
   static const String home = '/';
   static const String notFound = '/not-found';
 
+  static final routerConfig = GoRouter(
+    debugLogDiagnostics: true,
+    initialLocation: home,
+    routes: routes,
+  );
+
   static final routes = <GoRoute>[
     GoRoute(
       path: home,
@@ -22,12 +28,11 @@ class AppRoutes {
       path: CameraView.route,
       name: CameraView.name,
       builder: (context, state) {
-        final {
-          'images': images as List<String>,
-          'index': index as int?,
-          'photoType': photoType as PhotoType,
-        } = state.extra as Map<String, Object>;
-
+        final extra = state.extra as Map<String, Object>;
+        final images = extra['images'] as List<String>;
+        final index = extra['index'] as int?;
+        final photoType = extra['photoType'] as PhotoType;
+        
         return CameraView(
           images: images,
           index: index ?? 0,
@@ -39,17 +44,9 @@ class AppRoutes {
       path: ChecklistMantenimientoView.route,
       name: ChecklistMantenimientoView.name,
       builder: (context, state) {
-        if (state.extra is Map<String, RecorridoSucursalModel>){
-          final {'recorrido': recorrido} = state.extra as Map<String, RecorridoSucursalModel>;
-          return ChecklistMantenimientoView(
-            recorrido: recorrido,
-          );
-        }
-
-        final {
-          'recorrido': recorrido as RecorridoSucursalModel,
-          'index': index  as int?,
-        } = state.extra! as Map<String, Object>;
+        final extra = state.extra as Map<String, Object>;
+        final recorrido = extra['recorrido'] as RecorridoSucursalModel;
+        final index = extra['index'] as int?;
 
         return ChecklistMantenimientoView(
           recorrido: recorrido,
@@ -61,18 +58,10 @@ class AppRoutes {
       path: ChecklistMantenimientoView.resumeRoute,
       name: ChecklistMantenimientoView.resumeName,
       builder: (context, state) {
-        if (state.extra is Map<String, RecorridoSucursalModel>){
-          final {'recorrido': recorrido} = state.extra as Map<String, RecorridoSucursalModel>;
-          return ChecklistMantenimientoView(
-            recorrido: recorrido,
-            isResume: true,
-          );
-        }
 
-        final {
-          'recorrido': recorrido as RecorridoSucursalModel,
-          'index': index as int?,
-        } = state.extra as Map<String, Object>;
+        final extra = state.extra as Map<String, Object>;
+        final recorrido = extra['recorrido'] as RecorridoSucursalModel;
+        final index = extra['index'] as int?;
 
         return ChecklistMantenimientoView(
           recorrido: recorrido,
@@ -85,6 +74,7 @@ class AppRoutes {
       path: FormView.route,
       name: FormView.name,
       builder: (context, state) {
+
         final {
           'questions': questions as List<QuestionsResponseModel>,
           'title': title as String,

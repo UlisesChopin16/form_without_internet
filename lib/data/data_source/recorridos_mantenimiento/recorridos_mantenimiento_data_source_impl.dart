@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:form_without_internet/data/data_source/recorridos_mantenimiento/recorridos_mantenimiento_data_source.dart';
+import 'package:form_without_internet/data/network/apis/plano_sucursal_api.dart';
 import 'package:form_without_internet/data/network/apis/recorridos_mantenimiento_api.dart';
 import 'package:form_without_internet/data/responses/list_form_response/list_forms_response.dart';
 import 'package:form_without_internet/data/responses/recorrido_mantenimiento_response.dart/recorridos_mantenimiento_response.dart';
@@ -6,8 +9,10 @@ import 'package:form_without_internet/domain/models/list_forms_response_model/li
 
 class RecorridosMantenimientoDataSourceImpl implements RecorridosMantenimientoDataSource {
   final RecorridosMantenimientoApi recorridosMantenimientoApi;
+  final PlanoSucursalApi planoSucursalApi;
 
-  RecorridosMantenimientoDataSourceImpl({required this.recorridosMantenimientoApi});
+  RecorridosMantenimientoDataSourceImpl(
+      {required this.recorridosMantenimientoApi, required this.planoSucursalApi});
 
   @override
   Future<RecorridosMantenimientoResponse> getRecorridosMantenimientoDS() async {
@@ -20,9 +25,16 @@ class RecorridosMantenimientoDataSourceImpl implements RecorridosMantenimientoDa
     final response = await recorridosMantenimientoApi.getListForms();
     return response;
   }
-  
+
   @override
   Future<void> sendFormDS(ListFormsResponseModel body) async {
     return await recorridosMantenimientoApi.sendForm(body.toJson());
+  }
+
+  @override
+  Future<File> getPlanoSucursalDS() async {
+    final response = await planoSucursalApi.getPlanoSucursal();
+    print(response);
+    return response;
   }
 }

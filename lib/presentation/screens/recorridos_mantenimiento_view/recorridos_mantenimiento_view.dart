@@ -143,8 +143,7 @@ class _RecorridosMantenimientoViewState extends ConsumerState<RecorridosMantenim
                         ) = ref
                             .read(recorridosMantenimientoViewModelProvider.notifier)
                             .cantidades(recorrido.recorridoSucursalModels);
-
-                        cantidadRecorridos.add(recorrido.recorridoSucursalModels);
+                            
                         final cells = [
                           recorrido.sem.toString(),
                           recorrido.inicio,

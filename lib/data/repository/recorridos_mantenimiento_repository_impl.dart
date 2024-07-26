@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:form_without_internet/app/app_preferences.dart';
 import 'package:form_without_internet/data/data_source/recorridos_mantenimiento/recorridos_mantenimiento_data_source.dart';
@@ -28,7 +29,8 @@ class RecorridosMantenimientoRepositoryImpl implements RecorridosMantenimientoRe
   }
 
   @override
-  Future<ListFormsResponseModel> getListFormsRep(String section, String folio, {bool isResume = false}) async {
+  Future<ListFormsResponseModel> getListFormsRep(String section, String folio,
+      {bool isResume = false}) async {
     // final response = await recorridosMantenimientoDataSource.getListFormsDS();
     // return response.toDomain();
 
@@ -72,5 +74,25 @@ class RecorridosMantenimientoRepositoryImpl implements RecorridosMantenimientoRe
       return;
     }
     await recorridosMantenimientoDataSource.sendFormDS(body);
+  }
+
+  @override
+  Future<File> getPlanoSucursalRep(String folio) async {
+    final checkData = appPreferences.getPlanoSucursal(folio);
+    if (checkData.isNotEmpty) {
+      print('I have data');
+      return File(checkData);
+    }
+
+    final bool isConnected = await networkInfo.isConnected;
+    if (!isConnected) {
+      return File('');
+    }
+
+    print('I dont have data');
+    final response = await recorridosMantenimientoDataSource.getPlanoSucursalDS();
+    final path = response.path;
+    appPreferences.setPlanoSucursal(folio, path);
+    return response;
   }
 }

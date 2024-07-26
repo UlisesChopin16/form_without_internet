@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:form_without_internet/app/dep_inject.dart';
 import 'package:form_without_internet/domain/models/recorridos_mantenimiento_response_model/recorridos_mantenimiento_response_model.dart';
@@ -42,11 +43,20 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
     state = state.copyWith(data: data.data, isLoading: false);
   }
 
+  Future<File> getPlanoSucursal(String folio) async {
+    final response = await _useCase.getPlanoSucursal(folio);
+    print(response);
+    return response;
+  }
+
   bool trueOrFalse(int index) {
     return index % 2 == 0;
   }
 
-  ({List<List<RecorridoSucursalModel>> cantidadRecorridos, List<int> numeroCantidades}) cantidades(List<RecorridoSucursalModel> recorridosSucursal) {
+  ({
+    List<List<RecorridoSucursalModel>> cantidadRecorridos,
+    List<int> numeroCantidades,
+  }) cantidades(List<RecorridoSucursalModel> recorridosSucursal) {
     final List<List<RecorridoSucursalModel>> recorridosS = [];
     final List<RecorridoSucursalModel> pendientesL = [];
     final List<RecorridoSucursalModel> enCursoL = [];
@@ -73,6 +83,7 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
     recorridosS.add(pendientesL);
     recorridosS.add(enCursoL);
     recorridosS.add(finalizadosL);
+    recorridosS.add(recorridosSucursal);
 
     cantidadesS.add(pendientes);
     cantidadesS.add(enCurso);

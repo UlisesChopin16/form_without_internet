@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 const String FACHADA = 'fachada';
 const String SECTION = 'section';
+const String PLANO_SUCURSAL = 'plano_sucursal';
 
 class AppPreferences {
   final SharedPreferences sharedPreferences;
@@ -45,6 +46,20 @@ class AppPreferences {
   Future<bool> dropSection({required String folio, required String sectionP}) async {
     final String key = '$SECTION:$sectionP$folio';
     final data = await sharedPreferences.remove(key);
+    return data;
+  }
+
+  Future<bool> setPlanoSucursal(String folio, String value) async {
+    final data = await sharedPreferences.setString(PLANO_SUCURSAL + folio, value);
+    return data;
+  }
+
+  String getPlanoSucursal(String folio) {
+    return sharedPreferences.getString(PLANO_SUCURSAL + folio) ?? '';
+  }
+
+  Future<bool> dropPlanoSucursal(String folio) async {
+    final data = await sharedPreferences.remove(PLANO_SUCURSAL + folio);
     return data;
   }
 }

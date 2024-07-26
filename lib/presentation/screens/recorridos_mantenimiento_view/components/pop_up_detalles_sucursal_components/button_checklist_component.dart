@@ -7,8 +7,8 @@ import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart'
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
-class ButtonPopupDetalleSucursalComponent extends StatelessWidget {
-  const ButtonPopupDetalleSucursalComponent({
+class ButtonChecklistComponent extends StatelessWidget {
+  const ButtonChecklistComponent({
     super.key,
     required this.recorrido,
   });

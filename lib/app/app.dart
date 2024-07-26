@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:form_without_internet/presentation/routes/app_routes.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -35,13 +34,8 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routerConfig: GoRouter(
-        debugLogDiagnostics: true,
-        initialLocation: AppRoutes.home,
-        routes: AppRoutes.routes,
-      ),
+      routerConfig: AppRoutes.routerConfig,
       // home: const CameraView(photoType: PhotoType.fachadaSection),
     );
   }
 }
-

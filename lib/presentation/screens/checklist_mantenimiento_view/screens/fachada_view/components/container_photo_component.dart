@@ -98,6 +98,7 @@ class ContainerPhotoComponent extends ConsumerWidget {
   Future<void> onTap(BuildContext context, WidgetRef ref, String image) async {
     final isResume = ref.watch(fachadaViewModelProvider.select((value) => value.isResume));
 
+    final List<String> images = image.isNotEmpty ? [image] : [];
     if (isResume) {
       return;
     }
@@ -105,7 +106,7 @@ class ContainerPhotoComponent extends ConsumerWidget {
       CameraView.route,
       extra: {
         'photoType': PhotoType.fachadaSection,
-        'images': image.isNotEmpty ? [image] : [],
+        'images': images,
       },
     );
   }
