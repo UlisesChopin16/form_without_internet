@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 enum StatusRecorridoMantenimientoType {
+  todos(value: 'Todos', color: Colors.blue),
   pendiente(value: 'Pendiente', color: Colors.red),
   enCurso(value: 'En curso', color: Colors.orange),
   completado(value: 'Completado', color: Colors.green);
@@ -13,7 +14,7 @@ enum StatusRecorridoMantenimientoType {
     required this.color,
   });
 
-  static StatusRecorridoMantenimientoType getType(String value) {
+  static StatusRecorridoMantenimientoType getType(String? value) {
     switch (value) {
       case 'Pendiente':
         return StatusRecorridoMantenimientoType.pendiente;

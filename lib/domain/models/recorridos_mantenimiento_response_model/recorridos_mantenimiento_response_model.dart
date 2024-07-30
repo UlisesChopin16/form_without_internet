@@ -1,5 +1,6 @@
 import 'package:form_without_internet/types/status_recorrido_mantenimiento_type.dart';
 import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart';
+import 'package:form_without_internet/types/tipo_sucursal_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'recorridos_mantenimiento_response_model.freezed.dart';
@@ -35,7 +36,7 @@ class RecorridoSucursalModel with _$RecorridoSucursalModel {
   const factory RecorridoSucursalModel({
     required String folio,
     required String nombre,
-    required String tipo,
+    required TipoSucursalType tipo,
     required String region,
     required StatusRecorridoSucursalType checklist,
   }) = _RecorridoSucursalModel;

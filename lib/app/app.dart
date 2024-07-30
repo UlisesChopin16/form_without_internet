@@ -33,9 +33,25 @@ class _MyAppState extends ConsumerState<MyApp> with WidgetsBindingObserver {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        inputDecorationTheme: const InputDecorationTheme(
+          labelStyle: TextStyle(
+            color: Colors.black,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              color: Colors.black,
+            ),
+          ),
+        ),
       ),
       routerConfig: AppRoutes.routerConfig,
       // home: const CameraView(photoType: PhotoType.fachadaSection),
+
     );
   }
 }

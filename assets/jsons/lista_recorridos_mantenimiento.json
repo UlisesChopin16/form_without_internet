@@ -9,36 +9,36 @@
                 {
                     "folio": "FOLIO-001",
                     "nombre": "SAN MIGUEL DE ALLENDE",
-                    "tipo": "Tipo 1",
+                    "tipo": "Chica",
                     "region": "QUERETARO",
                     "checklist": "Completado"
                 },
                 {
                     "folio": "FOLIO-002",
                     "nombre": "Sucursal 2",
-                    "tipo": "Tipo 2",
-                    "region": "Region 2",
+                    "tipo": "Mediana",
+                    "region": "Región 2",
                     "checklist": "Completado"
                 },
                 {
                     "folio": "FOLIO-003",
                     "nombre": "Sucursal 3",
-                    "tipo": "Tipo 3",
-                    "region": "Region 3",
+                    "tipo": "Cadem",
+                    "region": "Región 3",
                     "checklist": "En curso"
                 },
                 {
                     "folio": "FOLIO-004",
                     "nombre": "Sucursal 4",
-                    "tipo": "Tipo 4",
-                    "region": "Region 4",
+                    "tipo": "Grande",
+                    "region": "Región 4",
                     "checklist": "En curso"
                 },
                 {
                     "folio": "FOLIO-005",
                     "nombre": "Sucursal 5",
-                    "tipo": "Tipo 5",
-                    "region": "Region 5",
+                    "tipo": "Grande T",
+                    "region": "Región 5",
                     "checklist": "Pendiente"
                 }
             ],
@@ -54,37 +54,37 @@
                 {
                     "folio": "FOLIO-006",
                     "nombre": "Sucursal 3",
-                    "tipo": "Tipo 3",
-                    "region": "Region 3",
+                    "tipo": "Cadem",
+                    "region": "Región 3",
                     "checklist": "Pendiente"
                 },
                 {
                     "folio": "FOLIO-007",
                     "nombre": "Sucursal 4",
-                    "tipo": "Tipo 4",
-                    "region": "Region 4",
+                    "tipo": "Grande",
+                    "region": "Región 4",
                     "checklist": "Pendiente"
                 },
                 {
                     "folio": "FOLIO-008",
                     "nombre": "Esta es la sucursal con un nombre muy largo",
-                    "tipo": "Tipo 5",
-                    "region": "Region 5",
+                    "tipo": "Grande T",
+                    "region": "Región 5",
                     "checklist": "En curso"
                     
                 },
                 {
                     "folio": "FOLIO-009",
                     "nombre": "Sucursal 6",
-                    "tipo": "Tipo 6",
-                    "region": "Region 6",
+                    "tipo": "Chica",
+                    "region": "Región 6",
                     "checklist": "En curso"
                 },
                 {
                     "folio": "FOLIO-010",
                     "nombre": "Sucursal 7",
-                    "tipo": "Tipo 7",
-                    "region": "Region 7",
+                    "tipo": "Mediana",
+                    "region": "Región 7",
                     "checklist": "Completado"
                 }
             ],
@@ -100,36 +100,36 @@
                 {
                     "folio": "FOLIO-011",
                     "nombre": "Sucursal 8",
-                    "tipo": "Tipo 8",
-                    "region": "Region 8",
+                    "tipo": "Cadem",
+                    "region": "Región 8",
                     "checklist": "Completado"
                 },
                 {
                     "folio": "FOLIO-012",
                     "nombre": "Sucursal 9",
-                    "tipo": "Tipo 9",
-                    "region": "Region 9",
+                    "tipo": "Grande",
+                    "region": "Región 9",
                     "checklist": "Completado"
                 },
                 {
                     "folio": "FOLIO-013",
                     "nombre": "Sucursal 10",
-                    "tipo": "Tipo 10",
-                    "region": "Region 10",
+                    "tipo": "Grande T",
+                    "region": "Región 10",
                     "checklist": "En curso"
                 },
                 {
                     "folio": "FOLIO-014",
                     "nombre": "Sucursal 11",
-                    "tipo": "Tipo 11",
-                    "region": "Region 11",
+                    "tipo": "Chica",
+                    "region": "Región 11",
                     "checklist": "En curso"
                 },
                 {
                     "folio": "FOLIO-015",
                     "nombre": "Sucursal 12",
-                    "tipo": "Tipo 12",
-                    "region": "Region 12",
+                    "tipo": "Mediana",
+                    "region": "Región 12",
                     "checklist": "Pendiente"
                 }
             ],
@@ -145,36 +145,36 @@
                 {
                     "folio": "FOLIO-016",
                     "nombre": "Sucursal 13",
-                    "tipo": "Tipo 13",
-                    "region": "Region 13",
+                    "tipo": "Cadem",
+                    "region": "Región 13",
                     "checklist": "Pendiente"
                 },
                 {
                     "folio": "FOLIO-017",
                     "nombre": "Sucursal 14",
-                    "tipo": "Tipo 14",
-                    "region": "Region 14",
+                    "tipo": "Grande",
+                    "region": "Región 14",
                     "checklist": "Pendiente"
                 },
                 {
                     "folio": "FOLIO-018",
                     "nombre": "Sucursal 15",
-                    "tipo": "Tipo 15",
-                    "region": "Region 15",
+                    "tipo": "Grande T",
+                    "region": "Región 15",
                     "checklist": "En curso"
                 },
                 {
                     "folio": "FOLIO-019",
                     "nombre": "Sucursal 16",
-                    "tipo": "Tipo 16",
-                    "region": "Region 16",
+                    "tipo": "Chica",
+                    "region": "Región 16",
                     "checklist": "En curso"
                 },
                 {
                     "folio": "FOLIO-020",
                     "nombre": "Sucursal 17",
-                    "tipo": "Tipo 17",
-                    "region": "Region 17",
+                    "tipo": "Mediana",
+                    "region": "Región 17",
                     "checklist": "Completado"
                 }
             ],

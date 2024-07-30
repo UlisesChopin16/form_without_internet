@@ -9,7 +9,7 @@ extension RecorridosMantenimientoApiMapper on RecorridoSucursal {
       folio: folio.orEmpty(),
       nombre: nombre.orEmpty(),
       region: region.orEmpty(),
-      tipo: tipo.orEmpty(),
+      tipo: tipo.tipoSucursal(),
     );
   }
 }

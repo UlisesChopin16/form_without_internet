@@ -108,7 +108,7 @@ class PopupDetalleSucursalComponent extends StatelessWidget {
                           LabelContentComponent(
                             label: 'Tipo:',
                             content: Text(
-                              recorrido.tipo,
+                              recorrido.tipo.value,
                               style: style,
                             ),
                           ),

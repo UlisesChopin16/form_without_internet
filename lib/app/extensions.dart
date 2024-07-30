@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_without_internet/presentation/screens/image_full_view/image_full_view.dart';
 import 'package:form_without_internet/types/status_recorrido_mantenimiento_type.dart';
 import 'package:form_without_internet/types/status_recorrido_sucursal_type.dart';
+import 'package:form_without_internet/types/tipo_sucursal_type.dart';
 
 const empty = '';
 const zero = 0;
@@ -15,15 +16,15 @@ extension NonNullString on String? {
   }
 
   StatusRecorridoMantenimientoType orPending() {
-    return this == null
-        ? StatusRecorridoMantenimientoType.pendiente
-        : StatusRecorridoMantenimientoType.getType(this!);
+    return StatusRecorridoMantenimientoType.getType(this);
   }
 
   StatusRecorridoSucursalType orPendingSucursal() {
-    return this == null
-        ? StatusRecorridoSucursalType.pendiente
-        : StatusRecorridoSucursalType.getType(this!);
+    return StatusRecorridoSucursalType.getType(this);
+  }
+
+  TipoSucursalType tipoSucursal() {
+    return TipoSucursalType.getType(this);
   }
 }
 
@@ -41,7 +42,8 @@ extension ShowFullImage on BuildContext {
     List<String> images = const [],
     int index = 0,
     void Function(int)? onDelete,
-    /// if isDelete is true, the image can be deleted and is necessary to pass the onDelete function 
+
+    /// if isDelete is true, the image can be deleted and is necessary to pass the onDelete function
     bool isDelete = true,
   }) async {
     Navigator.of(this).push(

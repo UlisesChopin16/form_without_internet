@@ -15,8 +15,6 @@ class DioFactory {
       'Content-Type': 'application/json',
     };
 
-    
-
     dio.options = BaseOptions(
       headers: headers,
       baseUrl: 'https://dosomthings.com/wp-content/uploads/2022/07/dc0a7e44e96647848177c8afd4bdabdd.png',
