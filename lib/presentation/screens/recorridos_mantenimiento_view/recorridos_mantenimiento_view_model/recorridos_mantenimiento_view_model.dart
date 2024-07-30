@@ -61,48 +61,6 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
     );
   }
 
-  void filterStatusRecorridoMant(StatusRecorridoMantenimientoType? status) {
-    _filterTimer?.cancel();
-
-    state = state.copyWith(isFilteringM: true, filterStatusMant: status);
-
-    _filterTimer = Timer(const Duration(milliseconds: 500), () {
-      // obtenemos los recorridos actuales
-      final recorridos = state.data;
-
-      // filtramos los recorridos por folio y nombre
-      final recorridosFiltrados = recorridos.where((recorrido) {
-        return recorrido.status == status;
-      }).toList();
-
-      // actualizamos la lista de recorridos filtrados
-      state = state.copyWith(
-        filteredData: [...recorridosFiltrados],
-        isFilteringM: false,
-      );
-
-      // limpiamos el timer
-      _filterTimer?.cancel();
-    });
-  }
-
-  void clearFilterStatusRecorridoMant() {
-    _filterTimer?.cancel();
-
-    state = state.copyWith(
-      filterStatusMant: null,
-      isFilteringM: true,
-    );
-
-    _filterTimer = Timer(const Duration(milliseconds: 500), () {
-      state = state.copyWith(
-        filteredData: [...state.data],
-        isFilteringM: false,
-      );
-
-      _filterTimer?.cancel();
-    });
-  }
 
   bool trueOrFalse(int index) {
     return index % 2 == 0;
@@ -157,16 +115,61 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
     return response;
   }
 
-  List<RecorridoSucursalModel> getAllSucursales() {
-    final List<RecorridoSucursalModel> listRecorridos = [];
-    final data = state.data;
 
-    for (var recorrido in data) {
-      listRecorridos.addAll(recorrido.recorridoSucursalModels);
-    }
-    return listRecorridos;
+  void expandFiltersM() {
+    state = state.copyWith(expandFiltersM: !state.expandFiltersM);
   }
 
+  void expandFiltersS() {
+    state = state.copyWith(expandFiltersS: !state.expandFiltersS);
+  }
+
+  // ------------------------- FILTROS RECORRIDOS MANTENIMIENTO -----------------------------------
+  void filterStatusRecorridoMant(StatusRecorridoMantenimientoType? status) {
+    _filterTimer?.cancel();
+
+    state = state.copyWith(isFilteringM: true, filterStatusMant: status);
+
+    _filterTimer = Timer(const Duration(milliseconds: 500), () {
+      // obtenemos los recorridos actuales
+      final recorridos = state.data;
+
+      // filtramos los recorridos por folio y nombre
+      final recorridosFiltrados = recorridos.where((recorrido) {
+        return recorrido.status == status;
+      }).toList();
+
+      // actualizamos la lista de recorridos filtrados
+      state = state.copyWith(
+        filteredData: [...recorridosFiltrados],
+        isFilteringM: false,
+      );
+
+      // limpiamos el timer
+      _filterTimer?.cancel();
+    });
+  }
+
+  void clearFilterStatusRecorridoMant() {
+    _filterTimer?.cancel();
+
+    state = state.copyWith(
+      filterStatusMant: null,
+      isFilteringM: true,
+    );
+
+    _filterTimer = Timer(const Duration(milliseconds: 500), () {
+      state = state.copyWith(
+        filteredData: [...state.data],
+        isFilteringM: false,
+      );
+
+      _filterTimer?.cancel();
+    });
+  }
+
+
+  // ------------------------- FILTROS SUCURSALES -----------------------------------
   getListSucursalesFiltered(List<RecorridoSucursalModel> recorridos) {
     state = state.copyWith(
       recorridosFiltrados: recorridos,
@@ -179,36 +182,21 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
       recorridos: [],
       recorridosFiltrados: [],
       filtersSucursales: const FiltrosModelRecorridosSucursales(),
+      isFiltered: false,
+      expandFiltersS: false,
     );
   }
 
-  void expandFiltersM() {
-    state = state.copyWith(expandFiltersM: !state.expandFiltersM);
-  }
+  List<RecorridoSucursalModel> getAllSucursales() {
+    final List<RecorridoSucursalModel> listRecorridos = [];
+    final data = state.data;
 
-  void expandFiltersS() {
-    state = state.copyWith(expandFiltersS: !state.expandFiltersS);
-  }
-
-  // check if we have filters if we have, return true, else return false
-  checkFilters() {
-    final filters = state.filtersSucursales;
-    if (filters.region != null ||
-        filters.sucursal != null ||
-        filters.tipoSucursal != null ||
-        filters.filterStatusSucursal != StatusRecorridoSucursalType.todos) {
-      state = state.copyWith(
-        filtersSucursales: filters.copyWith(hasFilters: true),
-      );
-      return;
+    for (var recorrido in data) {
+      listRecorridos.addAll(recorrido.recorridoSucursalModels);
     }
-    state = state.copyWith(
-      filtersSucursales: filters.copyWith(hasFilters: false),
-    );
+    return listRecorridos;
   }
-
-  // ------------------------- FILTROS SUCURSALES ------------------------------------
-
+  
   @override
   void cleanFilters() {
     _timer?.cancel();
@@ -454,6 +442,23 @@ class RecorridosMantenimientoViewModel extends _$RecorridosMantenimientoViewMode
       // limpiamos el timer
       _timer?.cancel();
     });
+  }
+
+  // check if we have filters if we have, return true, else return false
+  checkFilters() {
+    final filters = state.filtersSucursales;
+    if (filters.region != null ||
+        filters.sucursal != null ||
+        filters.tipoSucursal != null ||
+        filters.filterStatusSucursal != StatusRecorridoSucursalType.todos) {
+      state = state.copyWith(
+        filtersSucursales: filters.copyWith(hasFilters: true),
+      );
+      return;
+    }
+    state = state.copyWith(
+      filtersSucursales: filters.copyWith(hasFilters: false),
+    );
   }
 }
 
